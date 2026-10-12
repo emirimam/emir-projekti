@@ -67,7 +67,7 @@ const prettify = (slug: string) => {
 };
 
 export async function getProjects(): Promise<Project[]> {
-  const entries = (await getCollection('projects')).filter((e) => !e.data.hidden);
+  const entries = await getCollection('projects');
   const remote = (vercel.projects ?? []) as VercelProject[];
   const used = new Set<string>();
 
@@ -80,9 +80,11 @@ export async function getProjects(): Promise<Project[]> {
     );
   };
 
-  const described: Project[] = entries.map(({ id, data }) => {
+  // Skriveni projekti i dalje "zauzmu" svoj Vercel projekat, da se ne pojave kao novi.
+  const described: Project[] = entries.flatMap(({ id, data }) => {
     const r = findRemote(data.vercelProject, data.url);
     if (r) used.add(r.name);
+    if (data.hidden) return [];
     const url = data.url ?? r?.url;
     return {
       id,
@@ -99,7 +101,7 @@ export async function getProjects(): Promise<Project[]> {
       order: data.order,
       updatedAt: r?.updatedAt,
       auto: false,
-    };
+    } satisfies Project;
   });
 
   const discovered: Project[] = remote

@@ -11,5 +11,6 @@
   "audience": "Posjetioci Lukavca",
   "order": 7,
   "vercelProject": "qr-lukavac",
-  "url": "https://qr-lukavac.vercel.app"
+  "url": "https://qr-lukavac.vercel.app",
+  "hidden": true
 }
