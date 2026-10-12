@@ -99,13 +99,29 @@ const jsonLd = {
         {projects.map((p) => <ProjectRow project={p} />)}
       </ol>
     </section>
+    {
+      site.email && (
+        <section class="wrap contact" aria-labelledby="kontakt">
+          <h2 id="kontakt">Kontakt</h2>
+          <div>
+            <p>Imaš pitanje, ideju ili želiš neku od ovih aplikacija za svoj posao? Piši mi.</p>
+            <p class="mail">
+              <a href={`mailto:${site.email}`}>
+                {site.email.split('@')[0]}@<wbr />
+                {site.email.split('@')[1]}
+              </a>
+              <button type="button" class="copy" data-copy={site.email}>
+                Kopiraj
+              </button>
+            </p>
+          </div>
+        </section>
+      )
+    }
   </main>
 
   <footer class="wrap foot">
-    <p>
-      {site.email && <a href={`mailto:${site.email}`}>{site.email}</a>}
-      {site.github && <a href={site.github} rel="noopener">GitHub</a>}
-    </p>
+    <p>© {new Date().getFullYear()} {site.owner}, {site.place}</p>
     {
       syncedAt && (
         <p>
@@ -132,6 +148,19 @@ const jsonLd = {
     el.addEventListener('pointerleave', () => setActive(null));
     el.addEventListener('focusin', () => setActive(el.dataset.id ?? null));
     el.addEventListener('focusout', () => setActive(null));
+  }
+
+  // Kopiranje emaila
+  for (const btn of document.querySelectorAll<HTMLButtonElement>('button[data-copy]')) {
+    if (!navigator.clipboard) {
+      btn.hidden = true;
+      continue;
+    }
+    btn.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(btn.dataset.copy ?? '');
+      btn.textContent = 'Kopirano';
+      setTimeout(() => (btn.textContent = 'Kopiraj'), 2000);
+    });
   }
 
   // Filteri (bez JS-a se jednostavno prikazuje sve)
@@ -257,6 +286,59 @@ const jsonLd = {
     border-bottom: 1px solid var(--line);
   }
 
+  .contact {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 2.1fr);
+    gap: 1rem 2.5rem;
+    padding-block: 1rem 5rem;
+  }
+  .contact p {
+    margin: 0;
+    max-width: 46ch;
+  }
+  .contact .mail {
+    margin-top: 1rem;
+    max-width: none;
+  }
+  .mail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+  }
+  .mail a {
+    font-size: clamp(1.45rem, 5.4vw, 2.6rem);
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    font-stretch: 90%;
+    line-height: 1.1;
+    color: var(--ink);
+    text-decoration-color: var(--cat-iznajmljivanje);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 0.15em;
+    overflow-wrap: anywhere;
+  }
+  .mail a:hover {
+    color: var(--brine);
+  }
+  .copy {
+    font: inherit;
+    font-size: var(--step--1);
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+    min-height: 2.25rem;
+    cursor: pointer;
+  }
+  .copy:hover {
+    border-color: var(--ink);
+  }
+  .copy[hidden] {
+    display: none;
+  }
+
   .foot {
     display: flex;
     flex-wrap: wrap;
@@ -268,12 +350,11 @@ const jsonLd = {
   }
   .foot p {
     margin: 0;
-    display: flex;
-    gap: 1.25rem;
   }
 
   @media (max-width: 52rem) {
-    .hero {
+    .hero,
+    .contact {
       grid-template-columns: 1fr;
     }
   }

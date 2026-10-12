@@ -6,7 +6,7 @@ export const site = {
   description:
     'Web aplikacije iz Lukavca: upravljanje apartmanima, ekran za goste na TV-u, dizajner kuhinje, telefonija za firme i drugo.',
   /** Ostavi prazno da se kontakt ne prikazuje. */
-  email: '',
-  github: 'https://github.com/emirimam',
+  email: 'emirimamovice@gmail.com',
+  github: '',
   lang: 'bs',
 };
