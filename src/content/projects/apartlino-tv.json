@@ -4,7 +4,7 @@
   "description": "Gost uključi TV i vidi svoje ime, Wi-Fi, kućni red, vremensku prognozu i događaje u gradu, uz pokretanje Netflixa i YouTubea. Imena gostiju se popunjavaju sama iz rezervacijskih mailova. Besplatno za vlasnike.",
   "url": "https://tv-setup.vercel.app",
   "vercelProject": "t-vsetup",
-  "status": "beta",
+  "status": "live",
   "category": "iznajmljivanje",
   "stack": [
     "React",

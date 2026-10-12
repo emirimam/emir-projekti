@@ -4,7 +4,7 @@
   "description": "Kalendar rezervacija sa iCal sinhronizacijom (Airbnb, Booking), automatski zadaci čišćenja i korisnički nalozi za cijeli tim. Radi i kao aplikacija na telefonu.",
   "url": "https://apartlino.com",
   "vercelProject": "happy-supabase-lab",
-  "status": "live",
+  "status": "beta",
   "category": "iznajmljivanje",
   "stack": [
     "TanStack Start",
