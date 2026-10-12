@@ -1,0 +1,33 @@
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
+import { glob } from 'astro/loaders';
+
+export const STATUSES = ['live', 'beta', 'u-izradi', 'ideja'] as const;
+export const CATEGORIES = ['iznajmljivanje', 'alati', 'turizam', 'telekom', 'transport'] as const;
+
+/**
+ * Jedan projekat = jedan JSON fajl u src/content/projects/.
+ * Novi projekat: kopiraj postojeći fajl, promijeni podatke, gotovo.
+ */
+const projects = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: './src/content/projects' }),
+  schema: z.object({
+    name: z.string(),
+    tagline: z.string().max(90),
+    description: z.string(),
+    url: z.url().optional(),
+    /** Ime projekta na Vercelu — povezuje opis sa automatskim podacima. */
+    vercelProject: z.string().optional(),
+    status: z.enum(STATUSES),
+    category: z.enum(CATEGORIES),
+    stack: z.array(z.string()).default([]),
+    audience: z.string().optional(),
+    featured: z.boolean().default(false),
+    /** Manji broj = više na listi. */
+    order: z.number().default(100),
+    since: z.number().int().optional(),
+    hidden: z.boolean().default(false),
+  }),
+});
+
+export const collections = { projects };

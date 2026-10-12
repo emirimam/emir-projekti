@@ -1,0 +1,14 @@
+# Svaki dan ponovo izgradi stranicu kako bi novi Vercel projekti
+# automatski ušli na listu. Potreban je GitHub secret VERCEL_DEPLOY_HOOK
+# (Vercel → Project → Settings → Git → Deploy Hooks).
+name: Dnevno osvježavanje projekata
+on:
+  schedule:
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pokreni Vercel deploy hook
+        run: curl -fsS -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"

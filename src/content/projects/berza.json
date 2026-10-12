@@ -1,0 +1,14 @@
+{
+  "name": "Berza.ba",
+  "tagline": "Objavi teret, prevoznici ti šalju ponude",
+  "description": "Online berza transporta robe u BiH. Objaviš šta treba prevesti, od paketa do namještaja i vozila, a vozači i prevoznici se nadmeću ponudama. Uporediš cijene, ocjene i profile i izabereš najbolju.",
+  "url": "https://berza.vercel.app",
+  "vercelProject": "berza",
+  "status": "beta",
+  "category": "transport",
+  "stack": [
+    "Vercel"
+  ],
+  "audience": "Ljudi koji šalju robu i prevoznici",
+  "order": 5
+}

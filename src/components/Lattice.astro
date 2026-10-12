@@ -1,0 +1,222 @@
+---
+/**
+ * Kristalna rešetka soli (NaCl): svaki projekat je jedan ion.
+ * Rešetka sama raste kad projekata ima više, a prazna mjesta ostaju
+ * vidljiva kao prostor za sljedeće.
+ */
+import type { Project } from '../lib/projects';
+import { statusLabel } from '../lib/projects';
+
+interface Props {
+  projects: Project[];
+}
+const { projects } = Astro.props;
+
+const N = 3; // 3×3 po sloju
+const layers = Math.max(2, Math.ceil((projects.length + 3) / (N * N)));
+
+type Slot = { x: number; y: number; z: number; big: boolean };
+const slots: Slot[] = [];
+for (let z = 0; z < layers; z++)
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) slots.push({ x, y, z, big: (x + y + z) % 2 === 0 });
+
+// Projekti zauzimaju najvidljivija mjesta: prednja, pa gornja.
+const byVisibility = [...slots].sort((a, b) => b.x + b.y - (a.x + a.y) || b.z - a.z || b.x - a.x);
+const assignment = new Map<Slot, Project>();
+projects.forEach((p, i) => assignment.set(byVisibility[i], p));
+
+const K = 58;
+const C = Math.cos(Math.PI / 6) * K;
+const S = 0.5 * K;
+const proj = (x: number, y: number, z: number): [number, number] => [(x - y) * C, (x + y) * S - z * K];
+const pts = (list: [number, number, number][]) =>
+  list
+    .map(([x, y, z]) => proj(x, y, z))
+    .map(([a, b]) => `${a.toFixed(1)},${b.toFixed(1)}`)
+    .join(' ');
+
+function faces({ x, y, z, big }: Slot) {
+  const h = big ? 0.3 : 0.19;
+  return {
+    top: pts([
+      [x - h, y - h, z + h],
+      [x + h, y - h, z + h],
+      [x + h, y + h, z + h],
+      [x - h, y + h, z + h],
+    ]),
+    right: pts([
+      [x + h, y - h, z + h],
+      [x + h, y + h, z + h],
+      [x + h, y + h, z - h],
+      [x + h, y - h, z - h],
+    ]),
+    left: pts([
+      [x - h, y + h, z + h],
+      [x + h, y + h, z + h],
+      [x + h, y + h, z - h],
+      [x - h, y + h, z - h],
+    ]),
+  };
+}
+
+// Veze između susjednih iona
+const bonds: string[] = [];
+for (const s of slots) {
+  for (const [dx, dy, dz] of [
+    [1, 0, 0],
+    [0, 1, 0],
+    [0, 0, 1],
+  ]) {
+    if (s.x + dx < N && s.y + dy < N && s.z + dz < layers) {
+      const [a, b] = proj(s.x, s.y, s.z);
+      const [c, d] = proj(s.x + dx, s.y + dy, s.z + dz);
+      bonds.push(`M${a.toFixed(1)} ${b.toFixed(1)}L${c.toFixed(1)} ${d.toFixed(1)}`);
+    }
+  }
+}
+
+const ordered = [...slots].sort((a, b) => a.x + a.y + a.z - (b.x + b.y + b.z) || a.z - b.z);
+
+// viewBox iz krajnjih tačaka
+const all = slots.flatMap(({ x, y, z }) => [proj(x - 0.4, y - 0.4, z + 0.4), proj(x + 0.4, y + 0.4, z - 0.4), proj(x + 0.4, y - 0.4, z), proj(x - 0.4, y + 0.4, z)]);
+const xs = all.map((p) => p[0]);
+const ys = all.map((p) => p[1]);
+const pad = 8;
+const vb = [Math.min(...xs) - pad, Math.min(...ys) - pad, Math.max(...xs) - Math.min(...xs) + pad * 2, Math.max(...ys) - Math.min(...ys) + pad * 2]
+  .map((n) => n.toFixed(1))
+  .join(' ');
+const free = slots.length - projects.length;
+---
+
+<figure class="lattice">
+  <svg viewBox={vb} role="group" aria-label={`Rešetka projekata: ${projects.length} zauzetih i ${free} slobodnih mjesta`}>
+    <path class="bonds" d={bonds.join('')}></path>
+    {
+      ordered.map((slot, i) => {
+        const p = assignment.get(slot);
+        const f = faces(slot);
+        return p ? (
+          <a
+            href={`#p-${p.id}`}
+            class="ion"
+            data-id={p.id}
+            data-cat={p.category}
+            data-status={p.status}
+            style={`--i:${i}`}
+            aria-label={`${p.name}, ${statusLabel[p.status]}`}
+          >
+            <title>{p.name}</title>
+            <polygon class="f-left" points={f.left} />
+            <polygon class="f-right" points={f.right} />
+            <polygon class="f-top" points={f.top} />
+          </a>
+        ) : (
+          <g class="ion ion--empty" aria-hidden="true" style={`--i:${i}`}>
+            <polygon points={f.left} />
+            <polygon points={f.right} />
+            <polygon points={f.top} />
+          </g>
+        );
+      })
+    }
+  </svg>
+  <figcaption>
+    Svaka kocka je jedan projekat, raspoređen kao ioni u kristalu soli. Prazna mjesta čekaju sljedeće.
+  </figcaption>
+</figure>
+
+<style>
+  .lattice {
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+    justify-items: center;
+  }
+  svg {
+    width: min(100%, 30rem);
+    height: auto;
+    overflow: visible;
+  }
+  figcaption {
+    max-width: 26ch;
+    text-align: center;
+    color: var(--muted);
+    font-size: var(--step--1);
+    line-height: 1.4;
+  }
+  .bonds {
+    stroke: var(--line);
+    stroke-width: 1;
+    fill: none;
+  }
+  .ion {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .ion polygon {
+    stroke: var(--paper);
+    stroke-width: 1;
+    stroke-linejoin: round;
+  }
+  a.ion {
+    --c: var(--cat-ostalo);
+    cursor: pointer;
+    outline: none;
+  }
+  a.ion[data-cat='iznajmljivanje'] {
+    --c: var(--cat-iznajmljivanje);
+  }
+  a.ion[data-cat='alati'] {
+    --c: var(--cat-alati);
+  }
+  a.ion[data-cat='turizam'] {
+    --c: var(--cat-turizam);
+  }
+  a.ion[data-cat='telekom'] {
+    --c: var(--cat-telekom);
+  }
+  a.ion[data-cat='transport'] {
+    --c: var(--cat-transport);
+  }
+  a.ion .f-top {
+    fill: color-mix(in oklab, var(--c) 72%, white);
+  }
+  a.ion .f-left {
+    fill: var(--c);
+  }
+  a.ion .f-right {
+    fill: color-mix(in oklab, var(--c) 70%, black);
+  }
+  a.ion[data-status='ideja'] polygon,
+  a.ion[data-status='u-izradi'] polygon {
+    fill-opacity: 0.55;
+  }
+  a.ion:is(:hover, :focus-visible, .is-active) polygon {
+    stroke: var(--ink);
+    stroke-width: 2;
+  }
+  a.ion.is-dim {
+    opacity: 0.18;
+  }
+  .ion--empty polygon {
+    fill: none;
+    stroke: var(--line);
+    stroke-dasharray: 3 3;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .ion {
+      animation: crystallize 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+      animation-delay: calc(var(--i) * 45ms);
+    }
+    a.ion {
+      transition: opacity 200ms;
+    }
+    @keyframes crystallize {
+      from {
+        opacity: 0;
+        transform: scale(0.2);
+      }
+    }
+  }
+</style>

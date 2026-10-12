@@ -1,0 +1,15 @@
+{
+  "name": "Lukavac QR vodič",
+  "tagline": "Skeniraj QR kod na lokaciji i saznaj priču tog mjesta",
+  "description": "Digitalni turistički vodič kroz Lukavac, bez instalacije aplikacije: posjetilac skenira QR kod na lokaciji i otvori priču o tom mjestu. Prve stanice su Trg slobode i Vila Lukavac.",
+  "status": "beta",
+  "category": "turizam",
+  "stack": [
+    "Web",
+    "QR"
+  ],
+  "audience": "Posjetioci Lukavca",
+  "order": 7,
+  "vercelProject": "qr-lukavac",
+  "url": "https://qr-lukavac.vercel.app"
+}

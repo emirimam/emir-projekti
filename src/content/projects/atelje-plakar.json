@@ -1,0 +1,15 @@
+{
+  "name": "Ateljé Plakar",
+  "tagline": "Konfigurator ugradnih plakara sa cijenom i PDF ponudom",
+  "description": "Unesi dimenzije niše, izaberi kolone, elemente i materijale i odmah vidiš izgled plakara i procjenu cijene. Na kraju se generiše PDF ponuda za klijenta.",
+  "url": "https://closet-designer-plus.vercel.app",
+  "vercelProject": "closet-designer-plus",
+  "status": "beta",
+  "category": "alati",
+  "stack": [
+    "Vercel",
+    "PDF"
+  ],
+  "audience": "Stolarske firme i njihovi klijenti",
+  "order": 4
+}

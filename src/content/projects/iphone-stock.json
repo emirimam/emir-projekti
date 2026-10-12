@@ -1,0 +1,15 @@
+{
+  "name": "iPhone Stock",
+  "tagline": "Obavijest čim željeni iPhone stigne u Apple Store",
+  "description": "Prati dostupnost modela za preuzimanje u odabranim Apple Store radnjama i javlja se kad se pojave na stanju.",
+  "url": "https://iphone-stock-checker-hazel.vercel.app",
+  "vercelProject": "iphone-stock-checker",
+  "status": "live",
+  "category": "alati",
+  "stack": [
+    "Next.js",
+    "Vercel"
+  ],
+  "audience": "Kupci koji čekaju novi iPhone",
+  "order": 6
+}

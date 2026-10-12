@@ -1,0 +1,18 @@
+{
+  "name": "Apartlino",
+  "tagline": "Upravljanje apartmanima za kratkoročni najam na jednom mjestu",
+  "description": "Kalendar rezervacija sa iCal sinhronizacijom (Airbnb, Booking), automatski zadaci čišćenja i korisnički nalozi za cijeli tim. Radi i kao aplikacija na telefonu.",
+  "url": "https://apartlino.com",
+  "vercelProject": "happy-supabase-lab",
+  "status": "live",
+  "category": "iznajmljivanje",
+  "stack": [
+    "TanStack Start",
+    "Vite",
+    "Supabase",
+    "PWA"
+  ],
+  "audience": "Vlasnici i upravitelji apartmana",
+  "featured": true,
+  "order": 1
+}

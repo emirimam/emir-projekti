@@ -1,0 +1,14 @@
+{
+  "name": "itdvoip",
+  "tagline": "Hostovana telefonska centrala za firme",
+  "description": "Poslovna VoIP telefonija u oblaku: brojevi, lokali, prosljeđivanje i govorne poruke bez opreme u prostorijama firme.",
+  "url": "https://itdvoip.com",
+  "status": "live",
+  "category": "telekom",
+  "stack": [
+    "PBXware",
+    "WordPress"
+  ],
+  "audience": "Male i srednje firme",
+  "order": 8
+}

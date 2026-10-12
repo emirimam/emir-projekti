@@ -1,0 +1,13 @@
+{
+  "name": "AI recepcioner",
+  "tagline": "Virtualni asistent koji se javlja na poziv i prosljeđuje ga",
+  "description": "Glasovni asistent za firme na itdvoip centrali: odgovara na česta pitanja i spaja pozivaoca sa pravom osobom.",
+  "status": "ideja",
+  "category": "telekom",
+  "stack": [
+    "VoIP",
+    "AI"
+  ],
+  "audience": "Firme koje primaju puno poziva",
+  "order": 9
+}

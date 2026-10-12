@@ -1,0 +1,280 @@
+---
+import Base from '../layouts/Base.astro';
+import Lattice from '../components/Lattice.astro';
+import ProjectRow from '../components/ProjectRow.astro';
+import { categoryLabel, getProjects, relativeDate, syncedAt, type Category } from '../lib/projects';
+import { site } from '../site';
+
+const projects = await getProjects();
+
+const count = (fn: (s: string) => boolean) => projects.filter((p) => fn(p.status)).length;
+const live = count((s) => s === 'live');
+const beta = count((s) => s === 'beta');
+const later = count((s) => s === 'u-izradi' || s === 'ideja');
+
+const plural = (n: number, one: string, few: string, many: string) => {
+  const m10 = n % 10;
+  const m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return one;
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+  return many;
+};
+
+const summary = [
+  live && `${live} ${plural(live, 'radi', 'rade', 'radi')}`,
+  beta && `${beta} ${plural(beta, 'je', 'su', 'je')} u beta fazi`,
+  later && `${later} ${plural(later, 'je', 'su', 'je')} u pripremi`,
+]
+  .filter(Boolean)
+  .join(', ');
+
+const categories = [...new Set(projects.map((p) => p.category))] as Category[];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: site.title,
+  itemListElement: projects.map((p, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'SoftwareApplication',
+      name: p.name,
+      description: p.tagline,
+      applicationCategory: 'WebApplication',
+      ...(p.url ? { url: p.url } : {}),
+    },
+  })),
+};
+---
+
+<Base>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
+
+  <header class="wrap top">
+    <a class="mark" href="/" aria-label="Početna">
+      <svg viewBox="0 0 32 32" width="22" height="22" aria-hidden="true"
+        ><polygon points="16,3 28,10 16,17 4,10" fill="var(--cat-iznajmljivanje)" opacity=".7"></polygon><polygon
+          points="4,10 16,17 16,30 4,23"
+          fill="var(--cat-iznajmljivanje)"></polygon><polygon
+          points="28,10 16,17 16,30 28,23"
+          fill="color-mix(in oklab, var(--cat-iznajmljivanje) 70%, black)"></polygon></svg
+      >
+      {site.owner}
+    </a>
+    <span class="place">{site.place}</span>
+  </header>
+
+  <main>
+    <section class="wrap hero" aria-labelledby="naslov">
+      <div class="intro">
+        <h1 id="naslov">Aplikacije za iznajmljivače, majstore, firme i moj grad.</h1>
+        <p class="lede">
+          Sve što sam napravio, na jednom mjestu: od onih koje već svakodnevno koriste ljudi do onih na kojima tek
+          radim.
+        </p>
+        <p class="count">
+          <strong>{projects.length} {plural(projects.length, 'projekat', 'projekta', 'projekata')}</strong>: {summary}.
+        </p>
+      </div>
+      <Lattice projects={projects} />
+    </section>
+
+    <section id="projekti" class="wrap list" aria-labelledby="projekti-naslov">
+      <div class="list-head">
+        <h2 id="projekti-naslov">Projekti</h2>
+        <div class="filters" role="group" aria-label="Filtriraj po oblasti" hidden>
+          <button type="button" data-filter="sve" aria-pressed="true">Sve</button>
+          {
+            categories.map((c) => (
+              <button type="button" data-filter={c} data-cat={c} aria-pressed="false">
+                {categoryLabel[c]}
+              </button>
+            ))
+          }
+        </div>
+      </div>
+      <p class="sr-only" aria-live="polite" data-announce></p>
+      <ol class="rows">
+        {projects.map((p) => <ProjectRow project={p} />)}
+      </ol>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>
+      {site.email && <a href={`mailto:${site.email}`}>{site.email}</a>}
+      {site.github && <a href={site.github} rel="noopener">GitHub</a>}
+    </p>
+    {
+      syncedAt && (
+        <p>
+          Lista se osvježava sa Vercela. Zadnja provjera:{' '}
+          <time datetime={syncedAt}>{relativeDate(syncedAt)}</time>.
+        </p>
+      )
+    }
+  </footer>
+</Base>
+
+<script>
+  const rows = [...document.querySelectorAll<HTMLElement>('.row')];
+  const ions = [...document.querySelectorAll<SVGAElement>('a.ion')];
+  const filters = document.querySelector<HTMLElement>('.filters');
+  const announce = document.querySelector<HTMLElement>('[data-announce]');
+
+  // Povezivanje kocke u rešetki i reda u listi
+  const setActive = (id: string | null) => {
+    for (const el of [...rows, ...ions]) el.classList.toggle('is-active', !!id && el.dataset.id === id);
+  };
+  for (const el of [...rows, ...ions]) {
+    el.addEventListener('pointerenter', () => setActive(el.dataset.id ?? null));
+    el.addEventListener('pointerleave', () => setActive(null));
+    el.addEventListener('focusin', () => setActive(el.dataset.id ?? null));
+    el.addEventListener('focusout', () => setActive(null));
+  }
+
+  // Filteri (bez JS-a se jednostavno prikazuje sve)
+  if (filters) {
+    filters.hidden = false;
+    filters.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-filter]');
+      if (!btn) return;
+      const value = btn.dataset.filter;
+      for (const b of filters.querySelectorAll('button')) b.setAttribute('aria-pressed', String(b === btn));
+      let shown = 0;
+      for (const r of rows) {
+        const match = value === 'sve' || r.dataset.cat === value;
+        r.hidden = !match;
+        if (match) shown++;
+      }
+      for (const i of ions) i.classList.toggle('is-dim', value !== 'sve' && i.dataset.cat !== value);
+      if (announce) announce.textContent = `Prikazano projekata: ${shown}`;
+    });
+  }
+</script>
+
+<style>
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 1.5rem;
+    font-size: var(--step--1);
+  }
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 650;
+    font-size: var(--step-0);
+  }
+  .place {
+    color: var(--muted);
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 3rem;
+    padding-block: clamp(2rem, 7vw, 6rem) clamp(3rem, 8vw, 7rem);
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--step-4);
+    line-height: 0.98;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    font-stretch: 85%;
+    max-width: 14ch;
+    text-wrap: balance;
+  }
+  .lede {
+    margin: 1.75rem 0 0;
+    font-size: var(--step-1);
+    line-height: 1.45;
+    max-width: 36ch;
+    color: var(--muted);
+  }
+  .count {
+    margin: 1.5rem 0 0;
+    max-width: 44ch;
+  }
+
+  .list {
+    padding-bottom: 4rem;
+  }
+  .list-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    padding-bottom: 1.25rem;
+  }
+  h2 {
+    margin: 0;
+    font-size: var(--step-3);
+    letter-spacing: -0.02em;
+    font-stretch: 90%;
+    line-height: 1;
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .filters[hidden] {
+    display: none;
+  }
+  .filters button {
+    font: inherit;
+    font-size: var(--step--1);
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+    cursor: pointer;
+    min-height: 2.25rem;
+  }
+  .filters button:hover {
+    border-color: var(--ink);
+  }
+  .filters button[aria-pressed='true'] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+  .rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 2rem 3rem;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+  .foot p {
+    margin: 0;
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 52rem) {
+    .hero {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

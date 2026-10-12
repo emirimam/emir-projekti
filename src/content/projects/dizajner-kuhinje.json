@@ -1,0 +1,12 @@
+{
+  "name": "Dizajner kuhinje",
+  "tagline": "Složi kuhinju po mjeri i dobij krojnu listu elemenata",
+  "description": "Unesi dimenzije prostora, rasporedi elemente i aplikacija izračuna mjere ploča za kroj. Radni naziv KROJ.",
+  "url": "https://true-kitchen-design.vercel.app",
+  "vercelProject": "true-kitchen-design",
+  "status": "beta",
+  "category": "alati",
+  "stack": ["React", "Vercel"],
+  "audience": "Stolari i ljudi koji opremaju kuhinju",
+  "order": 3
+}
