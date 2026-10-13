@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
 import { LANGS, langMeta, ui, type Lang } from '../i18n';
 
 interface Props {
@@ -34,6 +35,7 @@ const alt = (l: Lang) => new URL(langMeta[l].path, Astro.site);
     {LANGS.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={langMeta[l].og} />)}
     <meta name="twitter:card" content="summary" />
     <slot name="head" />
+    <Analytics />
   </head>
   <body>
     <a class="skip" href="#projekti">{ui[lang].skip}</a>
