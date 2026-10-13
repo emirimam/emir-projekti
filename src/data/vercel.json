@@ -2,6 +2,17 @@
   "syncedAt": "2026-10-12T07:50:25.000Z",
   "projects": [
     {
+      "name": "premium-tuzla",
+      "url": "https://premium-tuzla.vercel.app",
+      "domains": [
+        "premium-tuzla.vercel.app"
+      ],
+      "framework": null,
+      "repo": null,
+      "createdAt": "2026-10-13T07:11:49.000Z",
+      "updatedAt": "2026-10-13T07:28:34.000Z"
+    },
+    {
       "name": "iphone-stock-checker",
       "url": "https://iphone-stock-checker-hazel.vercel.app",
       "domains": [

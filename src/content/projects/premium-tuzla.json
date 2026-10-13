@@ -1,0 +1,12 @@
+{
+  "name": "Premium apartman Tuzla",
+  "tagline": "Moderan stan sa dvije spavaće sobe u centru Tuzle",
+  "description": "Stranica za direktnu rezervaciju apartmana blizu Panonskih jezera, od 49 € po noći. Gost bira WhatsApp, upitni obrazac, Airbnb ili Booking.com, a uz to vidi sobe, sadržaje, galeriju i lokaciju na karti.",
+  "url": "https://premium-tuzla.vercel.app",
+  "vercelProject": "premium-tuzla",
+  "status": "live",
+  "category": "iznajmljivanje",
+  "stack": ["Vercel"],
+  "audience": "Gosti koji dolaze u Tuzlu",
+  "order": 3
+}
