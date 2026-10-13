@@ -6,7 +6,15 @@
   "vercelProject": "premium-tuzla",
   "status": "live",
   "category": "iznajmljivanje",
-  "stack": ["Vercel"],
+  "stack": [
+    "Vercel"
+  ],
   "audience": "Gosti koji dolaze u Tuzlu",
-  "order": 3
+  "order": 3,
+  "en": {
+    "name": "Premium Apartment Tuzla",
+    "tagline": "A modern two-bedroom flat in central Tuzla",
+    "description": "A direct-booking site for an apartment near the Pannonian Lakes, from €49 a night. Guests can book via WhatsApp, an enquiry form, Airbnb or Booking.com, and browse the rooms, amenities, photos and map.",
+    "audience": "Guests visiting Tuzla"
+  }
 }

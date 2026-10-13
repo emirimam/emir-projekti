@@ -9,5 +9,11 @@
     "AI"
   ],
   "audience": "Firme koje primaju puno poziva",
-  "order": 9
+  "order": 9,
+  "en": {
+    "name": "AI receptionist",
+    "tagline": "A virtual assistant that answers calls and transfers them",
+    "description": "A voice assistant for businesses on VoIP telephony: it answers common questions and connects callers to the right person.",
+    "audience": "Businesses that take a lot of calls"
+  }
 }

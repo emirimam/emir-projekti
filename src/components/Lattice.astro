@@ -5,12 +5,14 @@
  * vidljiva kao prostor za sljedeće.
  */
 import type { Project } from '../lib/projects';
-import { statusLabel } from '../lib/projects';
+import { ui, type Lang } from '../i18n';
 
 interface Props {
   projects: Project[];
+  lang: Lang;
 }
-const { projects } = Astro.props;
+const { projects, lang } = Astro.props;
+const t = ui[lang];
 
 const N = 3; // 3×3 po sloju
 const layers = Math.max(2, Math.ceil((projects.length + 3) / (N * N)));
@@ -89,7 +91,7 @@ const free = slots.length - projects.length;
 ---
 
 <figure class="lattice">
-  <svg viewBox={vb} role="group" aria-label={`Rešetka projekata: ${projects.length} zauzetih i ${free} slobodnih mjesta`}>
+  <svg viewBox={vb} role="group" aria-label={t.lattice.label(projects.length, free)}>
     <path class="bonds" d={bonds.join('')}></path>
     {
       ordered.map((slot, i) => {
@@ -103,7 +105,7 @@ const free = slots.length - projects.length;
             data-cat={p.category}
             data-status={p.status}
             style={`--i:${i}`}
-            aria-label={`${p.name}, ${statusLabel[p.status]}`}
+            aria-label={`${p.name}, ${p.auto ? t.status.novo : t.status[p.status]}`}
           >
             <title>{p.name}</title>
             <polygon class="f-left" points={f.left} />
@@ -120,9 +122,7 @@ const free = slots.length - projects.length;
       })
     }
   </svg>
-  <figcaption>
-    Svaka kocka je jedan projekat, raspoređen kao ioni u kristalu soli. Prazna mjesta čekaju sljedeće.
-  </figcaption>
+  <figcaption>{t.lattice.caption}</figcaption>
 </figure>
 
 <style>

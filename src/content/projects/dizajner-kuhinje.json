@@ -11,5 +11,11 @@
     "Vercel"
   ],
   "audience": "Stolari i ljudi koji opremaju kuhinju",
-  "order": 4
+  "order": 4,
+  "en": {
+    "name": "Kitchen Designer",
+    "tagline": "Lay out a custom kitchen and get a cutting list",
+    "description": "Enter the room dimensions, arrange the units and the app calculates the board sizes to cut. Working title KROJ.",
+    "audience": "Carpenters and anyone fitting a kitchen"
+  }
 }

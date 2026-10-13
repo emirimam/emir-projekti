@@ -12,5 +12,11 @@
   "order": 7,
   "vercelProject": "qr-lukavac",
   "url": "https://qr-lukavac.vercel.app",
-  "hidden": true
+  "hidden": true,
+  "en": {
+    "name": "Lukavac QR guide",
+    "tagline": "Scan the QR code on site and hear the story of the place",
+    "description": "A digital tourist guide to Lukavac with nothing to install: visitors scan a QR code at each spot. The first stops are Freedom Square and Villa Lukavac.",
+    "audience": "Visitors to Lukavac"
+  }
 }

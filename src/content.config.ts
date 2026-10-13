@@ -27,6 +27,15 @@ const projects = defineCollection({
     order: z.number().default(100),
     since: z.number().int().optional(),
     hidden: z.boolean().default(false),
+    /** Engleska verzija; prazna polja preuzimaju bosanski tekst. */
+    en: z
+      .object({
+        name: z.string().optional(),
+        tagline: z.string().max(90).optional(),
+        description: z.string().optional(),
+        audience: z.string().optional(),
+      })
+      .default({}),
   }),
 });
 

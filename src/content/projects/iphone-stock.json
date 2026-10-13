@@ -11,5 +11,10 @@
     "Vercel"
   ],
   "audience": "Kupci koji čekaju novi iPhone",
-  "order": 7
+  "order": 7,
+  "en": {
+    "tagline": "Get notified the moment your iPhone is in stock",
+    "description": "Watches pickup availability for chosen models at selected Apple Stores and alerts you when they show up.",
+    "audience": "Buyers waiting for a new iPhone"
+  }
 }

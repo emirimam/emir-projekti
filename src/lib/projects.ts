@@ -1,6 +1,7 @@
 import { getCollection } from 'astro:content';
 import vercel from '../data/vercel.json';
 import type { CATEGORIES, STATUSES } from '../content.config';
+import { ui, type Lang } from '../i18n';
 
 export type Status = (typeof STATUSES)[number];
 export type Category = (typeof CATEGORIES)[number] | 'ostalo';
@@ -33,22 +34,6 @@ export interface Project {
   auto: boolean;
 }
 
-export const statusLabel: Record<Status, string> = {
-  live: 'Radi',
-  beta: 'Beta',
-  'u-izradi': 'U izradi',
-  ideja: 'Ideja',
-};
-
-export const categoryLabel: Record<Category, string> = {
-  iznajmljivanje: 'Iznajmljivanje',
-  alati: 'Alati',
-  turizam: 'Turizam',
-  telekom: 'Telefonija',
-  transport: 'Transport',
-  ostalo: 'Ostalo',
-};
-
 const frameworkLabel: Record<string, string> = {
   nextjs: 'Next.js',
   vite: 'Vite',
@@ -66,7 +51,7 @@ const prettify = (slug: string) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
-export async function getProjects(): Promise<Project[]> {
+export async function getProjects(lang: Lang = 'bs'): Promise<Project[]> {
   const entries = await getCollection('projects');
   const remote = (vercel.projects ?? []) as VercelProject[];
   const used = new Set<string>();
@@ -86,17 +71,18 @@ export async function getProjects(): Promise<Project[]> {
     if (r) used.add(r.name);
     if (data.hidden) return [];
     const url = data.url ?? r?.url;
+    const t = lang === 'en' ? data.en : {};
     return {
       id,
-      name: data.name,
-      tagline: data.tagline,
-      description: data.description,
+      name: t.name ?? data.name,
+      tagline: t.tagline ?? data.tagline,
+      description: t.description ?? data.description,
       url,
       host: hostOf(url),
       status: data.status,
       category: data.category,
       stack: data.stack,
-      audience: data.audience,
+      audience: t.audience ?? data.audience,
       featured: data.featured,
       order: data.order,
       updatedAt: r?.updatedAt,
@@ -109,7 +95,7 @@ export async function getProjects(): Promise<Project[]> {
     .map((r) => ({
       id: r.name,
       name: prettify(r.name),
-      tagline: 'Novi projekat na Vercelu',
+      tagline: ui[lang].autoTagline,
       url: r.url,
       host: hostOf(r.url),
       status: 'live' as const,
@@ -121,17 +107,7 @@ export async function getProjects(): Promise<Project[]> {
       auto: true,
     }));
 
-  return [...described, ...discovered].sort((a, b) => a.order - b.order || a.name.localeCompare(b.name, 'bs'));
+  return [...described, ...discovered].sort((a, b) => a.order - b.order || a.name.localeCompare(b.name, lang));
 }
 
 export const syncedAt: string | null = vercel.syncedAt;
-
-const rtf = new Intl.RelativeTimeFormat('bs', { numeric: 'auto' });
-
-export function relativeDate(iso: string, now = Date.now()): string {
-  const days = Math.round((new Date(iso).getTime() - now) / 86_400_000);
-  if (Math.abs(days) < 1) return 'danas';
-  if (Math.abs(days) < 31) return rtf.format(days, 'day');
-  if (Math.abs(days) < 365) return rtf.format(Math.round(days / 30), 'month');
-  return rtf.format(Math.round(days / 365), 'year');
-}

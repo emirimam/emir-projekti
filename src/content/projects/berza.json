@@ -10,5 +10,10 @@
     "Vercel"
   ],
   "audience": "Ljudi koji šalju robu i prevoznici",
-  "order": 6
+  "order": 6,
+  "en": {
+    "tagline": "Post a load and let carriers send you offers",
+    "description": "An online freight marketplace for Bosnia and Herzegovina. Post what needs moving, from parcels to furniture and vehicles, and drivers bid for the job. Compare prices, ratings and profiles, then pick the best offer.",
+    "audience": "People shipping goods, and carriers"
+  }
 }

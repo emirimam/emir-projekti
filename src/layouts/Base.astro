@@ -1,23 +1,27 @@
 ---
 import '../styles/global.css';
-import { site } from '../site';
+import { LANGS, langMeta, ui, type Lang } from '../i18n';
 
 interface Props {
+  lang: Lang;
   title?: string;
   description?: string;
 }
-const { title = site.title, description = site.description } = Astro.props;
+const { lang, title = ui[lang].title, description = ui[lang].description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const alt = (l: Lang) => new URL(langMeta[l].path, Astro.site);
 ---
 
 <!doctype html>
-<html lang={site.lang}>
+<html lang={langMeta[lang].locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {LANGS.map((l) => <link rel="alternate" hreflang={langMeta[l].locale} href={alt(l)} />)}
+    <link rel="alternate" hreflang="x-default" href={alt('bs')} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="theme-color" content="#eef1f3" media="(prefers-color-scheme: light)" />
@@ -26,12 +30,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:locale" content="bs_BA" />
+    <meta property="og:locale" content={langMeta[lang].og} />
+    {LANGS.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={langMeta[l].og} />)}
     <meta name="twitter:card" content="summary" />
     <slot name="head" />
   </head>
   <body>
-    <a class="skip" href="#projekti">Preskoči na projekte</a>
+    <a class="skip" href="#projekti">{ui[lang].skip}</a>
     <slot />
   </body>
 </html>

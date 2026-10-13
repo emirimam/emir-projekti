@@ -39,4 +39,11 @@ Rešetka u zaglavlju raste sama: kad projekata bude više od slobodnih mjesta, d
 - Pristupačnost: skip link, vidljiv fokus, `aria-pressed` filteri, `prefers-reduced-motion`, svijetla i tamna tema
 - Radi i bez JavaScripta (filteri se tada sakriju, sve je vidljivo)
 
-Osnovni tekstovi (ime, mjesto, kontakt) su u `src/site.ts`.
+## Dva jezika
+
+- Bosanski je na `/`, engleski na `/en/`. Prekidač BS / EN je u zaglavlju.
+- Tekstovi interfejsa su u `src/i18n.ts`.
+- Engleski opis projekta ide u polje `"en"` u JSON fajlu (`name`, `tagline`, `description`, `audience`). Šta izostaviš, preuzima se iz bosanskog teksta.
+- Novi projekti koji stignu automatski sa Vercela se pojavljuju na obje verzije.
+
+Ime i kontakt email su u `src/site.ts`.

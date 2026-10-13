@@ -14,5 +14,10 @@
   ],
   "audience": "Vlasnici i upravitelji apartmana",
   "featured": true,
-  "order": 1
+  "order": 1,
+  "en": {
+    "tagline": "Short-term rental management in one place",
+    "description": "A booking calendar with iCal sync (Airbnb, Booking.com), automatic cleaning tasks and user accounts for the whole team. Also works as an app on your phone.",
+    "audience": "Apartment owners and property managers"
+  }
 }

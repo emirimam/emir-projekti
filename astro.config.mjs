@@ -7,7 +7,16 @@ const site = process.env.SITE_URL ?? 'https://emir-projekti.vercel.app';
 
 export default defineConfig({
   site,
-  integrations: [sitemap()],
+  i18n: {
+    defaultLocale: 'bs',
+    locales: ['bs', 'en'],
+    routing: { prefixDefaultLocale: false },
+  },
+  integrations: [
+    sitemap({
+      i18n: { defaultLocale: 'bs', locales: { bs: 'bs-BA', en: 'en-US' } },
+    }),
+  ],
   prefetch: { prefetchAll: true },
   build: { inlineStylesheets: 'auto' },
 });

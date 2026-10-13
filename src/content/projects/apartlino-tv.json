@@ -15,5 +15,10 @@
   ],
   "audience": "Iznajmljivači u BiH, Hrvatskoj i Srbiji",
   "featured": true,
-  "order": 2
+  "order": 2,
+  "en": {
+    "tagline": "A welcome screen for guests on the apartment TV",
+    "description": "Guests turn on the TV and see their name, the Wi-Fi password, house rules, the weather and events in town, plus one-tap Netflix and YouTube. Guest names fill in automatically from booking emails. Free for owners.",
+    "audience": "Hosts in Bosnia, Croatia and Serbia"
+  }
 }

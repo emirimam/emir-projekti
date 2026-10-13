@@ -11,5 +11,10 @@
     "PDF"
   ],
   "audience": "Stolarske firme i njihovi klijenti",
-  "order": 5
+  "order": 5,
+  "en": {
+    "tagline": "Built-in wardrobe configurator with pricing and PDF quotes",
+    "description": "Enter the alcove size, pick columns, fittings and materials, and see the wardrobe and an estimated price right away. Finish with a PDF quote for the client.",
+    "audience": "Joinery workshops and their clients"
+  }
 }

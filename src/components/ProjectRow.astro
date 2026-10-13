@@ -1,11 +1,13 @@
 ---
 import type { Project } from '../lib/projects';
-import { categoryLabel, relativeDate, statusLabel } from '../lib/projects';
+import { relativeDate, ui, type Lang } from '../i18n';
 
 interface Props {
   project: Project;
+  lang: Lang;
 }
-const { project: p } = Astro.props;
+const { project: p, lang } = Astro.props;
+const t = ui[lang];
 ---
 
 <li
@@ -18,30 +20,30 @@ const { project: p } = Astro.props;
   <div class="head">
     <span class="swatch" aria-hidden="true"></span>
     <h3>
-      {p.url ? <a href={p.url} rel="noopener" target="_blank">{p.name}<span class="sr-only"> (otvara se u novom prozoru)</span></a> : p.name}
+      {p.url ? <a href={p.url} rel="noopener" target="_blank">{p.name}<span class="sr-only"> {t.newWindow}</span></a> : p.name}
     </h3>
     <p class="tagline">{p.tagline}</p>
   </div>
 
   <div class="body">
     {p.description && <p>{p.description}</p>}
-    {p.audience && <p class="audience">Za koga: {p.audience}</p>}
-    {p.auto && <p class="audience">Pronađen automatski na Vercelu. Opis dodaj u src/content/projects/{p.id}.json.</p>}
+    {p.audience && <p class="audience">{t.audience}: {p.audience}</p>}
+    {p.auto && <p class="audience">{t.autoNote(p.id)}</p>}
   </div>
 
   <dl class="meta">
     <div>
       <dt class="sr-only">Status</dt>
-      <dd><span class="status" data-status={p.status}>{p.auto ? 'Novo' : statusLabel[p.status]}</span></dd>
+      <dd><span class="status" data-status={p.status}>{p.auto ? t.status.novo : t.status[p.status]}</span></dd>
     </div>
     <div>
-      <dt>Oblast</dt>
-      <dd>{categoryLabel[p.category]}</dd>
+      <dt>{t.meta.area}</dt>
+      <dd>{t.category[p.category]}</dd>
     </div>
     {
       p.stack.length > 0 && (
         <div>
-          <dt>Tehnologija</dt>
+          <dt>{t.meta.stack}</dt>
           <dd>{p.stack.join(', ')}</dd>
         </div>
       )
@@ -49,7 +51,7 @@ const { project: p } = Astro.props;
     {
       p.host && (
         <div>
-          <dt>Adresa</dt>
+          <dt>{t.meta.address}</dt>
           <dd>
             <a href={p.url} rel="noopener" target="_blank">
               {p.host}
@@ -61,9 +63,9 @@ const { project: p } = Astro.props;
     {
       p.updatedAt && (
         <div>
-          <dt>Zadnja izmjena</dt>
+          <dt>{t.meta.updated}</dt>
           <dd>
-            <time datetime={p.updatedAt}>{relativeDate(p.updatedAt)}</time>
+            <time datetime={p.updatedAt}>{relativeDate(p.updatedAt, lang)}</time>
           </dd>
         </div>
       )
