@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+import { langMeta, ui } from '../i18n';
+
+const bs = ui.bs.notFound;
+const en = ui.en.notFound;
+---
+
+<Base lang="bs" title={bs.title} index={false}>
+  <main id="projekti" class="wrap nf">
+    <svg viewBox="-60 -66 120 132" width="72" height="80" aria-hidden="true">
+      <polygon points="0,-58 50,-29 0,0 -50,-29" fill="color-mix(in oklab, var(--cat-iznajmljivanje) 70%, white)"></polygon>
+      <polygon points="-50,-29 0,0 0,58 -50,29" fill="var(--cat-iznajmljivanje)"></polygon>
+      <polygon points="50,-29 0,0 0,58 50,29" fill="color-mix(in oklab, var(--cat-iznajmljivanje) 65%, black)"></polygon>
+    </svg>
+    <h1>{bs.h1}</h1>
+    <p>{bs.text}</p>
+    <a class="btn" href={langMeta.bs.path}>{bs.back}</a>
+    <p class="en" lang="en">
+      {en.h1}
+      <a href={langMeta.en.path}>{en.back}</a>
+    </p>
+  </main>
+</Base>
+
+<style>
+  .nf {
+    min-height: 80vh;
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: 1.25rem;
+    padding-block: 4rem;
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--step-4);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-stretch: 85%;
+    max-width: 14ch;
+  }
+  p {
+    margin: 0;
+    max-width: 44ch;
+    color: var(--muted);
+    font-size: var(--step-1);
+  }
+  .btn {
+    margin-top: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+    padding: 0.7rem 1.35rem;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .en {
+    margin-top: 2rem;
+    font-size: var(--step--1);
+  }
+</style>

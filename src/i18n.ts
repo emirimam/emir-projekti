@@ -13,9 +13,16 @@ export const langMeta: Record<Lang, { label: string; short: string; locale: stri
 
 export const ui = {
   bs: {
-    title: 'Emir — projekti',
+    title: 'Emir Imamović — web aplikacije za iznajmljivače i firme',
     description:
-      'Web aplikacije iz Lukavca: upravljanje apartmanima, ekran za goste na TV-u, dizajner kuhinje, berza transporta i drugo.',
+      'Emir Imamović, Lukavac: web aplikacije za upravljanje apartmanima, TV ekran za goste, dizajner kuhinje, konfigurator plakara i berzu transporta.',
+    ogAlt: 'Emir Imamović — aplikacije za iznajmljivače, majstore, firme i moj grad',
+    notFound: {
+      title: 'Stranica nije pronađena — Emir Imamović',
+      h1: 'Ova stranica ne postoji.',
+      text: 'Možda je adresa pogrešno upisana ili je stranica premještena. Svi projekti su na početnoj.',
+      back: 'Idi na početnu',
+    },
     place: 'Lukavac, Bosna i Hercegovina',
     home: 'Početna',
     skip: 'Preskoči na projekte',
@@ -55,9 +62,16 @@ export const ui = {
     today: 'danas',
   },
   en: {
-    title: 'Emir — projects',
+    title: 'Emir Imamović — Web Apps for Hosts and Businesses',
     description:
-      'Web apps built in Lukavac, Bosnia: rental property management, a guest welcome screen for TVs, a kitchen designer, a freight marketplace and more.',
+      'Web apps by Emir Imamović from Lukavac, Bosnia: rental management, a guest TV welcome screen, a kitchen designer, a wardrobe configurator and a freight marketplace.',
+    ogAlt: 'Emir Imamović — apps for hosts, craftsmen, businesses and my hometown',
+    notFound: {
+      title: 'Page not found — Emir Imamović',
+      h1: 'This page does not exist.',
+      text: 'The address may be mistyped or the page has moved. All projects are on the home page.',
+      back: 'Go to the home page',
+    },
     place: 'Lukavac, Bosnia and Herzegovina',
     home: 'Home',
     skip: 'Skip to projects',

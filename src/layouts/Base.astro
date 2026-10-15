@@ -2,15 +2,21 @@
 import '../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
 import { LANGS, langMeta, ui, type Lang } from '../i18n';
+import { site } from '../site';
 
 interface Props {
   lang: Lang;
   title?: string;
   description?: string;
+  /** false za stranice koje ne treba indeksirati (npr. 404). */
+  index?: boolean;
 }
-const { lang, title = ui[lang].title, description = ui[lang].description } = Astro.props;
+const { lang, title = ui[lang].title, description = ui[lang].description, index = true } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const alt = (l: Lang) => new URL(langMeta[l].path, Astro.site);
+const ogImage = new URL(`/og-${lang}.png`, Astro.site);
+// Kod iz Google Search Console (HTML tag metoda). Postavlja se u Vercel varijablama.
+const googleVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 ---
 
 <!doctype html>
@@ -20,20 +26,47 @@ const alt = (l: Lang) => new URL(langMeta[l].path, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
-    {LANGS.map((l) => <link rel="alternate" hreflang={langMeta[l].locale} href={alt(l)} />)}
-    <link rel="alternate" hreflang="x-default" href={alt('bs')} />
+    <meta name="author" content={site.fullName} />
+    <meta
+      name="robots"
+      content={index ? 'index, follow, max-image-preview:large, max-snippet:-1' : 'noindex, follow'}
+    />
+    {googleVerification && <meta name="google-site-verification" content={googleVerification} />}
+    {
+      index && (
+        <>
+          <link rel="canonical" href={canonical} />
+          {LANGS.map((l) => (
+            <link rel="alternate" hreflang={langMeta[l].locale} href={alt(l)} />
+          ))}
+          <link rel="alternate" hreflang="x-default" href={alt('bs')} />
+        </>
+      )
+    }
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="theme-color" content="#eef1f3" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#131b22" media="(prefers-color-scheme: dark)" />
+
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.fullName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ui[lang].ogAlt} />
     <meta property="og:locale" content={langMeta[lang].og} />
     {LANGS.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={langMeta[l].og} />)}
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ui[lang].ogAlt} />
     <slot name="head" />
     <Analytics />
   </head>
