@@ -36,7 +36,7 @@ Rešetka u zaglavlju raste sama: kad projekata bude više od slobodnih mjesta, d
 - Font self-hostan (Bricolage Grotesque), bez poziva prema Googleu
 - Sigurnosna zaglavlja i CSP, dugo keširanje assets-a (`vercel.json`)
 - SEO: canonical, hreflang, Open Graph slike (`public/og-*.png`, generiše `scripts/og/render.py`), sitemap sa lastmod, robots.txt, JSON-LD (Person, WebSite, ProfilePage, lista aplikacija), 404 sa noindex, manifest i ikone
-- Google Search Console: kod za potvrdu ide u Vercel varijablu `PUBLIC_GOOGLE_SITE_VERIFICATION`
+- Google Search Console: kod za potvrdu je u `src/site.ts` (`googleSiteVerification`)
 - Pristupačnost: skip link, vidljiv fokus, `aria-pressed` filteri, `prefers-reduced-motion`, svijetla i tamna tema
 - Radi i bez JavaScripta (filteri se tada sakriju, sve je vidljivo)
 

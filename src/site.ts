@@ -9,6 +9,8 @@ export const site = {
   email: 'emirimamovice@gmail.com',
   /** Profili koji potvrđuju identitet za Google (sameAs). */
   profiles: ['https://github.com/emirimam'],
+  /** Google Search Console potvrda (HTML tag metoda). Nije tajna. */
+  googleSiteVerification: 'rxATFzPkrhgsxQD6HBPlZ82laDueMDwt2T0iv7wdc1c',
   locality: 'Lukavac',
   country: 'BA',
 };

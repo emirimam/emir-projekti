@@ -16,7 +16,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 const alt = (l: Lang) => new URL(langMeta[l].path, Astro.site);
 const ogImage = new URL(`/og-${lang}.png`, Astro.site);
 // Kod iz Google Search Console (HTML tag metoda). Postavlja se u Vercel varijablama.
-const googleVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
+const googleVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION || site.googleSiteVerification;
 ---
 
 <!doctype html>
