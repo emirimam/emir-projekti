@@ -30,7 +30,7 @@ export interface Project {
   featured: boolean;
   order: number;
   updatedAt?: string;
-  video?: { src: string; poster?: string };
+  video?: { src: string; poster: string; width: number; height: number; duration: number; uploadDate: string; title?: string };
   /** Pronađen na Vercelu, a još nije opisan u src/content/projects. */
   auto: boolean;
 }

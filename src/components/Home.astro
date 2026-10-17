@@ -85,6 +85,22 @@ const jsonLd = {
           inLanguage: langMeta[lang].locale,
           author: { '@id': personId },
           ...(p.url ? { url: p.url } : {}),
+          ...(p.video
+            ? {
+                video: {
+                  '@type': 'VideoObject',
+                  name: p.video.title ?? `${p.name}: promo video`,
+                  description: p.description ?? p.tagline,
+                  thumbnailUrl: new URL(p.video.poster, Astro.site).href,
+                  contentUrl: new URL(p.video.src, Astro.site).href,
+                  uploadDate: `${p.video.uploadDate}T12:00:00+02:00`,
+                  duration: `PT${p.video.duration}S`,
+                  width: p.video.width,
+                  height: p.video.height,
+                  inLanguage: langMeta[lang].locale,
+                },
+              }
+            : {}),
         },
       })),
     },
