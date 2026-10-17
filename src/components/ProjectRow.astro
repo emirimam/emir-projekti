@@ -12,7 +12,7 @@ const t = ui[lang];
 
 <li
   id={`p-${p.id}`}
-  class:list={['row', { 'row--featured': p.featured }]}
+  class:list={['row', { 'row--featured': p.featured, 'row--video': !!p.video }]}
   data-id={p.id}
   data-cat={p.category}
   data-status={p.status}
@@ -29,23 +29,6 @@ const t = ui[lang];
     {p.description && <p>{p.description}</p>}
     {p.audience && <p class="audience">{t.audience}: {p.audience}</p>}
     {p.auto && <p class="audience">{t.autoNote(p.id)}</p>}
-    {
-      p.video && (
-        <figure class="clip">
-          <video
-            src={p.video.src}
-            poster={p.video.poster}
-            controls
-            playsinline
-            preload="none"
-            width={p.video.width}
-            height={p.video.height}
-            aria-label={t.video(p.name)}
-          />
-          <figcaption>{t.videoNote(p.video.duration)}</figcaption>
-        </figure>
-      )
-    }
   </div>
 
   <dl class="meta">
@@ -88,6 +71,24 @@ const t = ui[lang];
       )
     }
   </dl>
+
+  {
+    p.video && (
+      <figure class="clip">
+        <video
+          src={p.video.src}
+          poster={p.video.poster}
+          controls
+          playsinline
+          preload="none"
+          width={p.video.width}
+          height={p.video.height}
+          aria-label={t.video(p.name)}
+        />
+        <figcaption>{t.videoNote(p.video.duration)}</figcaption>
+      </figure>
+    )
+  }
 </li>
 
 <style>
@@ -170,8 +171,53 @@ const t = ui[lang];
     font-size: var(--step--1);
   }
   .clip {
-    margin: 1.25rem 0 0;
-    max-width: 52ch;
+    margin: 0;
+  }
+
+  /* Red s videom: tekst lijevo, video desno u istoj visini */
+  .row--video {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    grid-template-areas:
+      'head clip'
+      'body clip'
+      'meta clip';
+    grid-template-rows: auto auto 1fr;
+    column-gap: 3rem;
+  }
+  .row--video .head {
+    grid-area: head;
+  }
+  .row--video .tagline {
+    max-width: 44ch;
+  }
+  .row--video .body {
+    grid-area: body;
+    padding-left: 1.75rem;
+  }
+  .row--video .body p:last-child {
+    margin-bottom: 0;
+  }
+  .row--video .meta {
+    grid-area: meta;
+    padding-left: 1.75rem;
+    grid-template-columns: repeat(2, minmax(0, max-content));
+    column-gap: 2.5rem;
+    row-gap: 0.75rem;
+  }
+  .row--video .meta div {
+    display: block;
+  }
+  .row--video .meta div:first-child {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+  .row--video .meta dt {
+    font-size: 0.78rem;
+    margin-bottom: 0.1rem;
+  }
+  .row--video .clip {
+    grid-area: clip;
+    align-self: start;
   }
   .clip video {
     display: block;
@@ -247,6 +293,26 @@ const t = ui[lang];
     }
     .head {
       grid-column: 1 / -1;
+    }
+    .row--video {
+      column-gap: 1.75rem;
+    }
+    .row--video .body,
+    .row--video .meta {
+      padding-left: 0;
+    }
+    .row--video .meta {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 48rem) {
+    .row--video {
+      grid-template-columns: 1fr;
+      grid-template-areas: 'head' 'clip' 'body' 'meta';
+      grid-template-rows: auto;
+    }
+    .row--video .meta {
+      grid-template-columns: repeat(2, minmax(0, max-content));
     }
   }
   @media (max-width: 38rem) {
