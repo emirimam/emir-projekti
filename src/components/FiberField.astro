@@ -1,0 +1,280 @@
+---
+/**
+ * Pozadina cijele stranice: mreža "optičkih kablova".
+ * Čvorovi (tačke) su spojeni zakrivljenim kablovima, a kroz njih stalno putuju
+ * svjetleći impulsi koji na svakom čvoru biraju sljedeći kabl, kao podaci kroz mrežu.
+ * - Kablovi oko pokazivača miša se blago osvijetle.
+ * - Animacija staje kad tab nije vidljiv; uz "smanji pokrete" mreža je mirna.
+ * - Ne smeta čitanju: niska prozirnost, iza sadržaja, bez klikova.
+ */
+---
+
+<canvas class="fiber" aria-hidden="true" data-fiber></canvas>
+
+<script>
+  type Node = { x: number; y: number; z: number; edges: number[]; flash: number };
+  type Edge = { a: number; b: number; cx: number; cy: number; len: number; glow: number };
+  type Pulse = { e: number; dir: 1 | -1; s: number; v: number; hue: number; trail: { x: number; y: number }[] };
+
+  const cv = document.querySelector<HTMLCanvasElement>('[data-fiber]');
+  if (cv) {
+    const ctx = cv.getContext('2d')!;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    const darkMq = matchMedia('(prefers-color-scheme: dark)');
+    let W = 0, H = 0, DPR = 1;
+    let nodes: Node[] = [];
+    let edges: Edge[] = [];
+    let pulses: Pulse[] = [];
+    let mouse = { x: -9999, y: -9999 };
+    let scrollY = window.scrollY;
+    let raf = 0;
+    let span = 0;
+    let last = performance.now();
+
+    // boje iz teme
+    let pal = { line: [0, 0, 0], node: [0, 0, 0], hues: [[0, 0, 0]], lineA: 0.1, pulseA: 0.8, dark: false };
+    const hex = (h: string) => {
+      const n = parseInt(h.trim().replace('#', ''), 16);
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    };
+    const readPalette = () => {
+      const cs = getComputedStyle(document.documentElement);
+      const dark = darkMq.matches;
+      pal = {
+        dark,
+        line: dark ? [120, 160, 185] : [70, 110, 130],
+        node: dark ? [190, 215, 230] : [60, 100, 120],
+        hues: [
+          hex(cs.getPropertyValue('--cat-iznajmljivanje') || '#e2a21f'),
+          hex(cs.getPropertyValue('--cat-alati') || '#2d8a92'),
+          dark ? [120, 220, 235] : [40, 150, 170],
+          hex(cs.getPropertyValue('--cat-transport') || '#8467a6'),
+        ],
+        lineA: dark ? 0.16 : 0.11,
+        pulseA: dark ? 0.95 : 0.75,
+      };
+    };
+
+    // determinističko slučajno (ista mreža pri istoj veličini)
+    let seed = 7;
+    const rnd = () => {
+      seed = (seed * 16807) % 2147483647;
+      return (seed - 1) / 2147483646;
+    };
+
+    const build = () => {
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth;
+      H = window.innerHeight;
+      cv.width = Math.round(W * DPR);
+      cv.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      seed = 7;
+      // čvorovi: više uz rubove, rjeđe u sredini gdje je tekst
+      // mreža pokriva cijelu stranicu uz paralaksu (pomjera se 25% brzine skrolanja)
+      const docH = document.documentElement.scrollHeight;
+      span = H + Math.max(0, docH - H) * 0.25 + 200;
+      const target = Math.round(Math.min(170, Math.max(28, (W * span) / 26000)));
+      nodes = [];
+      let tries = 0;
+      while (nodes.length < target && tries < target * 60) {
+        tries++;
+        const x = rnd() * (W + 200) - 100;
+        const y = rnd() * span - 100;
+        const mid = 1 - Math.min(1, Math.abs(x - W / 2) / (W * 0.5));
+        if (rnd() < mid * 0.55) continue;
+        if (nodes.some((n) => Math.hypot(n.x - x, n.y - y) < 95)) continue;
+        nodes.push({ x, y, z: 0.4 + rnd() * 0.6, edges: [], flash: 0 });
+      }
+      // kablovi: svaki čvor na 2–3 najbliža
+      edges = [];
+      const has = new Set<string>();
+      nodes.forEach((n, i) => {
+        const near = nodes
+          .map((m, j) => ({ j, d: Math.hypot(m.x - n.x, m.y - n.y) }))
+          .filter((q) => q.j !== i)
+          .sort((a, b) => a.d - b.d)
+          .slice(0, 2 + (rnd() < 0.45 ? 1 : 0));
+        near.forEach(({ j, d }) => {
+          const k = i < j ? `${i}-${j}` : `${j}-${i}`;
+          if (has.has(k) || d > 420) return;
+          has.add(k);
+          const m = nodes[j];
+          // kabl lagano "visi" (kontrolna tačka okomito na pravac)
+          const nx = -(m.y - n.y) / d, ny = (m.x - n.x) / d;
+          const sag = (rnd() - 0.5) * d * 0.45;
+          const e: Edge = { a: i, b: j, cx: (n.x + m.x) / 2 + nx * sag, cy: (n.y + m.y) / 2 + ny * sag, len: d * 1.08, glow: 0 };
+          edges.push(e);
+          n.edges.push(edges.length - 1);
+          m.edges.push(edges.length - 1);
+        });
+      });
+      // impulsi
+      const count = Math.round(edges.length * 0.55);
+      pulses = Array.from({ length: count }, () => newPulse());
+    };
+
+    const newPulse = (e = Math.floor(rnd() * edges.length)): Pulse => ({
+      e,
+      dir: rnd() < 0.5 ? 1 : -1,
+      s: rnd(),
+      v: 70 + rnd() * 110,
+      hue: rnd() < 0.5 ? 0 : rnd() < 0.6 ? 1 : rnd() < 0.7 ? 2 : 3,
+      trail: [],
+    });
+
+    const pointAt = (e: Edge, s: number, oy: number) => {
+      const A = nodes[e.a], B = nodes[e.b];
+      const u = 1 - s;
+      return {
+        x: u * u * A.x + 2 * u * s * e.cx + s * s * B.x,
+        y: u * u * A.y + 2 * u * s * e.cy + s * s * B.y - oy,
+      };
+    };
+
+    const rgba = (c: number[], a: number) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+
+    const frame = (now: number) => {
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      const oy = scrollY * 0.25; // paralaksa
+      ctx.clearRect(0, 0, W, H);
+
+      // kablovi
+      ctx.lineCap = 'round';
+      edges.forEach((e) => {
+        const A = nodes[e.a], B = nodes[e.b];
+        const top = Math.min(A.y, B.y, e.cy) - oy, bot = Math.max(A.y, B.y, e.cy) - oy;
+        if (bot < -30 || top > H + 30) return;
+        const mx = (A.x + B.x) / 2, my = (A.y + B.y) / 2 - oy;
+        const near = Math.max(0, 1 - Math.hypot(mx - mouse.x, my - mouse.y) / 260);
+        e.glow += (near - e.glow) * Math.min(1, dt * 6);
+        e.glow *= 0.995;
+        const z = (A.z + B.z) / 2;
+        ctx.strokeStyle = rgba(pal.line, pal.lineA * (0.55 + 0.45 * z) + e.glow * 0.25);
+        ctx.lineWidth = 0.8 + z * 0.9 + e.glow * 0.8;
+        ctx.beginPath();
+        ctx.moveTo(A.x, A.y - oy);
+        ctx.quadraticCurveTo(e.cx, e.cy - oy, B.x, B.y - oy);
+        ctx.stroke();
+      });
+
+      // impulsi sa repom
+      ctx.globalCompositeOperation = pal.dark ? 'lighter' : 'source-over';
+      pulses.forEach((p) => {
+        const e = edges[p.e];
+        if (!e) return;
+        p.s += (p.dir * p.v * dt * (1 + e.glow * 1.5)) / e.len;
+        if (p.s > 1 || p.s < 0) {
+          // stigao na čvor: bljesak i izbor sljedećeg kabla
+          const nodeIdx = p.s > 1 ? e.b : e.a;
+          const n = nodes[nodeIdx];
+          n.flash = 1;
+          const options = n.edges.filter((k) => k !== p.e);
+          const next = options.length ? options[Math.floor(rnd() * options.length)] : p.e;
+          const ne = edges[next];
+          p.e = next;
+          p.dir = ne.a === nodeIdx ? 1 : -1;
+          p.s = p.dir === 1 ? 0 : 1;
+        }
+        const pt = pointAt(edges[p.e], p.s, oy);
+        if (pt.y < -40 || pt.y > H + 40) {
+          p.trail.length = 0;
+          return;
+        }
+        p.trail.unshift(pt);
+        if (p.trail.length > 14) p.trail.pop();
+        const c = pal.hues[p.hue];
+        for (let i = p.trail.length - 1; i > 0; i--) {
+          const a = (1 - i / p.trail.length) * pal.pulseA * 0.5;
+          ctx.strokeStyle = rgba(c, a);
+          ctx.lineWidth = 2.4 * (1 - i / p.trail.length) + 0.4;
+          ctx.beginPath();
+          ctx.moveTo(p.trail[i].x, p.trail[i].y);
+          ctx.lineTo(p.trail[i - 1].x, p.trail[i - 1].y);
+          ctx.stroke();
+        }
+        const g = ctx.createRadialGradient(pt.x, pt.y, 0, pt.x, pt.y, 9);
+        g.addColorStop(0, rgba(c, pal.pulseA));
+        g.addColorStop(1, rgba(c, 0));
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, 9, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = pal.dark ? 'rgba(255,255,255,0.95)' : rgba(c, 1);
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, 1.8, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.globalCompositeOperation = 'source-over';
+
+      // čvorovi
+      nodes.forEach((n) => {
+        n.flash = Math.max(0, n.flash - dt * 2.2);
+        const y = n.y - oy;
+        if (y < -20 || y > H + 20) return;
+        const r = 1.6 + n.z * 1.6 + n.flash * 2.5;
+        if (n.flash > 0.02) {
+          ctx.fillStyle = rgba(pal.hues[0], 0.25 * n.flash);
+          ctx.beginPath();
+          ctx.arc(n.x, y, r * 4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.fillStyle = rgba(pal.node, 0.35 + 0.4 * n.z + 0.3 * n.flash);
+        ctx.beginPath();
+        ctx.arc(n.x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      if (!reduce.matches) raf = requestAnimationFrame(frame);
+    };
+
+    const start = () => {
+      cancelAnimationFrame(raf);
+      last = performance.now();
+      if (reduce.matches) frame(last);
+      else raf = requestAnimationFrame(frame);
+    };
+
+    readPalette();
+    build();
+    start();
+
+    let rt = 0;
+    addEventListener('resize', () => {
+      clearTimeout(rt);
+      rt = window.setTimeout(() => {
+        build();
+        start();
+      }, 150);
+    });
+    addEventListener('scroll', () => {
+      scrollY = window.scrollY;
+      if (reduce.matches) frame(performance.now());
+    }, { passive: true });
+    addEventListener('pointermove', (e) => {
+      mouse = { x: e.clientX, y: e.clientY };
+    }, { passive: true });
+    document.addEventListener('pointerleave', () => (mouse = { x: -9999, y: -9999 }));
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) cancelAnimationFrame(raf);
+      else start();
+    });
+    darkMq.addEventListener('change', () => {
+      readPalette();
+      start();
+    });
+    reduce.addEventListener('change', start);
+  }
+</script>
+
+<style>
+  .fiber {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+  }
+</style>

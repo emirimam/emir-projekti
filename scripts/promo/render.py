@@ -117,6 +117,12 @@ def main():
         check=True,
     )
     subprocess.run(
+        ["ffmpeg", "-y", "-loglevel", "error", "-i", str(final),
+         "-c:v", "libvpx-vp9", "-b:v", "0", "-crf", "37", "-row-mt", "1", "-c:a", "libopus", "-b:a", "128k",
+         str(OUT / "emir-promo.webm")],
+        check=True,
+    )
+    subprocess.run(
         ["ffmpeg", "-y", "-loglevel", "error", "-ss", "9.6", "-i", str(final), "-frames:v", "1",
          "-vf", "scale=1280:-2", "-q:v", "3", str(OUT / "emir-promo.jpg")],
         check=True,
