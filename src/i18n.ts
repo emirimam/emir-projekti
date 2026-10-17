@@ -45,6 +45,7 @@ export const ui = {
     meta: { area: 'Oblast', stack: 'Tehnologija', address: 'Adresa', updated: 'Zadnja izmjena' },
     audience: 'Za koga',
     newWindow: '(otvara se u novom prozoru)',
+    video: (name: string) => `${name}: promo video`,
     autoTagline: 'Novi projekat na Vercelu',
     autoNote: (id: string) => `Pronađen automatski na Vercelu. Opis dodaj u src/content/projects/${id}.json.`,
     lattice: {
@@ -94,6 +95,7 @@ export const ui = {
     meta: { area: 'Area', stack: 'Built with', address: 'Address', updated: 'Last updated' },
     audience: 'For',
     newWindow: '(opens in a new window)',
+    video: (name: string) => `${name}: promo video`,
     autoTagline: 'New project on Vercel',
     autoNote: (id: string) => `Found automatically on Vercel. Add a description in src/content/projects/${id}.json.`,
     lattice: {

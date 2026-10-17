@@ -29,6 +29,21 @@ const t = ui[lang];
     {p.description && <p>{p.description}</p>}
     {p.audience && <p class="audience">{t.audience}: {p.audience}</p>}
     {p.auto && <p class="audience">{t.autoNote(p.id)}</p>}
+    {
+      p.video && (
+        <video
+          class="clip"
+          src={p.video.src}
+          poster={p.video.poster}
+          controls
+          playsinline
+          preload="none"
+          width="720"
+          height="1280"
+          aria-label={t.video(p.name)}
+        />
+      )
+    }
   </div>
 
   <dl class="meta">
@@ -151,6 +166,18 @@ const t = ui[lang];
   .audience {
     color: var(--muted);
     font-size: var(--step--1);
+  }
+  .clip {
+    display: block;
+    width: min(100%, 15rem);
+    height: auto;
+    aspect-ratio: 9 / 16;
+    margin-top: 1.25rem;
+    border-radius: 1.1rem;
+    background: #13212e;
+    box-shadow:
+      0 0 0 1px var(--line),
+      0 18px 40px -18px color-mix(in oklab, var(--c) 55%, transparent);
   }
 
   .meta {

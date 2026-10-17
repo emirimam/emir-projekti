@@ -30,6 +30,7 @@ export interface Project {
   featured: boolean;
   order: number;
   updatedAt?: string;
+  video?: { src: string; poster?: string };
   /** Pronađen na Vercelu, a još nije opisan u src/content/projects. */
   auto: boolean;
 }
@@ -86,6 +87,7 @@ export async function getProjects(lang: Lang = 'bs'): Promise<Project[]> {
       featured: data.featured,
       order: data.order,
       updatedAt: r?.updatedAt,
+      video: data.video,
       auto: false,
     } satisfies Project;
   });

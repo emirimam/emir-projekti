@@ -27,6 +27,13 @@ const projects = defineCollection({
     order: z.number().default(100),
     since: z.number().int().optional(),
     hidden: z.boolean().default(false),
+    /** Kratki promo video iz public/ (npr. /video/ime.mp4), uspravni 9:16. */
+    video: z
+      .object({
+        src: z.string().startsWith('/'),
+        poster: z.string().startsWith('/').optional(),
+      })
+      .optional(),
     /** Engleska verzija; prazna polja preuzimaju bosanski tekst. */
     en: z
       .object({

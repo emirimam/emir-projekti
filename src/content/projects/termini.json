@@ -1,0 +1,20 @@
+{
+  "name": "Termini",
+  "tagline": "Online zakazivanje za salone, brijačnice i stomatologe",
+  "description": "Klijenti sami zakažu termin preko linka ili QR koda, bez aplikacije i poziva. Podsjetnik stiže na WhatsApp 24 i 2 sata prije, a ako klijent nema WhatsApp, šalje se SMS. Kalendar za cijeli tim, usluge, radno vrijeme i uvoz kontakata.",
+  "url": "https://termini-one.vercel.app",
+  "vercelProject": "termini",
+  "status": "beta",
+  "category": "alati",
+  "stack": ["Next.js", "Supabase", "WhatsApp Cloud API", "SMS"],
+  "audience": "Frizeri, brijačnice, kozmetičari i stomatolozi",
+  "featured": true,
+  "order": 2,
+  "since": 2026,
+  "video": { "src": "/video/termini-promo.mp4", "poster": "/video/termini-promo.jpg" },
+  "en": {
+    "tagline": "Online booking for salons, barbers and dentists",
+    "description": "Clients book their own appointment through a link or QR code, with no app and no phone call. Reminders go out on WhatsApp 24 and 2 hours before, with SMS as a fallback for clients without WhatsApp. Team calendar, services, opening hours and contact import.",
+    "audience": "Hairdressers, barbers, beauticians and dentists"
+  }
+}
