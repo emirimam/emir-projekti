@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import Lattice from './Lattice.astro';
+import Showreel from './Showreel.astro';
 import ProjectRow from './ProjectRow.astro';
 import { getProjects, syncedAt, type Category } from '../lib/projects';
 import { LANGS, langMeta, relativeDate, summary, ui, type Lang } from '../i18n';
@@ -67,6 +67,19 @@ const jsonLd = {
       primaryImageOfPage: { '@type': 'ImageObject', url: `${origin}/og-${lang}.png`, width: 1200, height: 630 },
       ...(lastMod ? { dateModified: lastMod } : {}),
       hasPart: { '@id': `${pageUrl}#projects` },
+      video: {
+        '@type': 'VideoObject',
+        name: lang === 'en' ? 'Emir Imamović — from dots to a crystal of apps' : 'Emir Imamović — od tačaka do kristala aplikacija',
+        description: t.description,
+        thumbnailUrl: `${origin}/video/emir-promo.jpg`,
+        contentUrl: `${origin}/video/emir-promo.mp4`,
+        uploadDate: '2026-10-17T23:00:00+02:00',
+        duration: 'PT22S',
+        width: 1920,
+        height: 1080,
+        inLanguage: 'bs',
+        author: { '@id': personId },
+      },
     },
     {
       '@type': 'ItemList',
@@ -152,7 +165,7 @@ const jsonLd = {
           <strong>{sum.count}</strong>: {sum.parts}.
         </p>
       </div>
-      <Lattice projects={projects} lang={lang} />
+      <Showreel projects={projects} lang={lang} />
     </section>
 
     <section id="projekti" class="wrap list" aria-labelledby="projekti-naslov">
@@ -368,7 +381,7 @@ const jsonLd = {
 
   .hero {
     display: grid;
-    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
     align-items: center;
     gap: 3rem;
     padding-block: clamp(2rem, 7vw, 6rem) clamp(3rem, 8vw, 7rem);

@@ -1,0 +1,29 @@
+{
+  "duration": 22,
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "bpm": 120,
+  "plexus": 1.6,
+  "converge": [3.0, 6.5],
+  "impact": 6.5,
+  "cubes": [7.5, 8.0, 8.5, 9.0, 9.5, 10.0, 10.5, 11.0, 11.5],
+  "pullback": 12.5,
+  "lines": [13.0, 13.5, 14.0, 14.5, 15.0],
+  "collapse": [17.0, 18.5],
+  "final": 18.5,
+  "projects": [
+    { "name": "Apartlino", "cat": "Iznajmljivanje", "color": "#e2a21f" },
+    { "name": "Apartlino TV", "cat": "Iznajmljivanje", "color": "#e2a21f" },
+    { "name": "Termini", "cat": "Alati", "color": "#2d8a92" },
+    { "name": "Premium apartman Tuzla", "cat": "Iznajmljivanje", "color": "#e2a21f" },
+    { "name": "Dizajner kuhinje", "cat": "Alati", "color": "#2d8a92" },
+    { "name": "Ateljé Plakar", "cat": "Alati", "color": "#2d8a92" },
+    { "name": "Berza.ba", "cat": "Transport", "color": "#8467a6" },
+    { "name": "iPhone Stock", "cat": "Alati", "color": "#2d8a92" },
+    { "name": "AI recepcioner", "cat": "Telefonija", "color": "#5f82a8" }
+  ],
+  "headline": ["Aplikacije za", "iznajmljivače,", "majstore,", "firme", "i moj grad."],
+  "signature": "Emir Imamović",
+  "url": "emir-projekti.vercel.app"
+}

@@ -47,6 +47,13 @@ export const ui = {
     newWindow: '(otvara se u novom prozoru)',
     video: (name: string) => `${name}: promo video`,
     videoNote: (sec: number) => `Promo video · ${sec} s`,
+    reel: {
+      label: 'Video: od tačaka do kristala svih mojih aplikacija',
+      soundOn: 'Uključi zvuk',
+      soundOff: 'Isključi zvuk',
+      pause: 'Pauziraj video',
+      play: 'Pokreni video',
+    },
     autoTagline: 'Novi projekat na Vercelu',
     autoNote: (id: string) => `Pronađen automatski na Vercelu. Opis dodaj u src/content/projects/${id}.json.`,
     lattice: {
@@ -98,6 +105,13 @@ export const ui = {
     newWindow: '(opens in a new window)',
     video: (name: string) => `${name}: promo video`,
     videoNote: (sec: number) => `Promo video · ${sec} s`,
+    reel: {
+      label: 'Video: from dots to a crystal of all my apps',
+      soundOn: 'Turn sound on',
+      soundOff: 'Turn sound off',
+      pause: 'Pause video',
+      play: 'Play video',
+    },
     autoTagline: 'New project on Vercel',
     autoNote: (id: string) => `Found automatically on Vercel. Add a description in src/content/projects/${id}.json.`,
     lattice: {
