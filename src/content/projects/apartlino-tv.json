@@ -2,7 +2,7 @@
   "name": "Apartlino TV",
   "tagline": "Ekran dobrodošlice za goste na televizoru u apartmanu",
   "description": "Gost uključi TV i vidi svoje ime, Wi-Fi, kućni red, vremensku prognozu i događaje u gradu, uz pokretanje Netflixa i YouTubea. Imena gostiju se popunjavaju sama iz rezervacijskih mailova. Besplatno za vlasnike.",
-  "url": "https://tv-setup.vercel.app",
+  "url": "https://tvsetup.apartlino.com",
   "vercelProject": "t-vsetup",
   "status": "live",
   "category": "iznajmljivanje",
@@ -16,6 +16,15 @@
   "audience": "Iznajmljivači u BiH, Hrvatskoj i Srbiji",
   "featured": true,
   "order": 2,
+  "video": {
+    "src": "/video/apartlino-tv-promo-16x9.mp4",
+    "poster": "/video/apartlino-tv-promo-16x9.jpg",
+    "width": 1280,
+    "height": 720,
+    "duration": 24,
+    "uploadDate": "2026-10-17",
+    "title": "Apartlino TV – promo video"
+  },
   "en": {
     "tagline": "A welcome screen for guests on the apartment TV",
     "description": "Guests turn on the TV and see their name, the Wi-Fi password, house rules, the weather and events in town, plus one-tap Netflix and YouTube. Guest names fill in automatically from booking emails. Free for owners.",
