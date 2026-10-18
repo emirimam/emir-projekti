@@ -49,8 +49,8 @@ Rešetka u zaglavlju raste sama: kad projekata bude više od slobodnih mjesta, d
 
 Ime i kontakt email su u `src/site.ts`.
 
-## Intro video i pozadina
+## Promo video i pozadina
 
-- Uvodni video (`src/components/Intro.astro`) se prikaže jednom po posjeti, preko cijelog ekrana. Može se preskočiti (dugme, Esc, skrol), a dugme „Pogledaj intro” ga pušta ponovo sa zvukom. Uz „smanji pokrete” se ne prikazuje.
+- Promo video je na dnu stranice (`src/components/Showreel.astro`). Sam se pokrene bez zvuka kad dođe na ekran; „Uključi zvuk” ga vraća na početak sa zvukom. Dugme „Pogledaj video” u zaglavlju vodi do njega.
 - Video i zvuk se prave kodom: `python3 scripts/promo/render.py` (scenarij i tajming su u `scripts/promo/timeline.json`). Nastaju MP4 i WebM u 1080p i 720p.
 - Pozadina sa „optičkim kablovima” je `src/components/FiberField.astro` (canvas, reaguje na miš, staje kad tab nije vidljiv).

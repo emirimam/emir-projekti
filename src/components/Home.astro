@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Lattice from './Lattice.astro';
-import Intro from './Intro.astro';
+import Showreel from './Showreel.astro';
 import FiberField from './FiberField.astro';
 import ProjectRow from './ProjectRow.astro';
 import { getProjects, syncedAt, type Category } from '../lib/projects';
@@ -125,7 +125,6 @@ const jsonLd = {
 
 <Base lang={lang}>
   <FiberField />
-  <Intro lang={lang} />
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
 
   <header class="wrap top">
@@ -168,10 +167,10 @@ const jsonLd = {
         <p class="count">
           <strong>{sum.count}</strong>: {sum.parts}.
         </p>
-        <button type="button" class="replay" data-replay-intro>
+        <a class="replay" href="#video">
           <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M7 5v14l12-7z" fill="currentColor"></path></svg>
-          {t.intro.replay}
-        </button>
+          {t.reel.watch}
+        </a>
       </div>
       <Lattice projects={projects} lang={lang} />
     </section>
@@ -257,6 +256,7 @@ const jsonLd = {
         </section>
       )
     }
+    <Showreel lang={lang} />
   </main>
 
   <footer class="wrap foot">
@@ -428,10 +428,9 @@ const jsonLd = {
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
     color: var(--ink);
-    font: inherit;
     font-size: var(--step--1);
     font-weight: 600;
-    cursor: pointer;
+    text-decoration: none;
   }
   .replay svg {
     color: var(--cat-iznajmljivanje);

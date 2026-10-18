@@ -1,0 +1,260 @@
+---
+/**
+ * Promo video na dnu stranice.
+ * - Pokreće se bez zvuka kad dođe na ekran (pravilo preglednika), pauzira se kad ode.
+ * - "Uključi zvuk" ga vraća na početak sa zvukom; ima i dugme za pauzu (WCAG 2.2.2).
+ * - Uz "smanji pokrete" se ne pokreće sam, nego čeka klik.
+ * Video se pravi skriptom scripts/promo/render.py.
+ */
+import { ui, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].reel;
+---
+
+<section id="video" class="wrap reel-section" aria-labelledby="video-naslov">
+  <div class="reel-head">
+    <h2 id="video-naslov">{t.title}</h2>
+    <p>{t.text}</p>
+  </div>
+  <figure class="reel" data-reel>
+    <video
+      poster="/video/emir-promo.jpg"
+      muted
+      loop
+      playsinline
+      controls
+      preload="none"
+      width="1280"
+      height="720"
+      aria-label={t.label}
+      data-sound-on={t.soundOn}
+      data-sound-off={t.soundOff}
+      data-play={t.play}
+      data-pause={t.pause}>
+      <source src="/video/emir-promo-720.webm" type="video/webm; codecs=vp9,opus" media="(max-width: 900px)" />
+      <source src="/video/emir-promo-720.mp4" type="video/mp4" media="(max-width: 900px)" />
+      <source src="/video/emir-promo.webm" type="video/webm; codecs=vp9,opus" />
+      <source src="/video/emir-promo.mp4" type="video/mp4" />
+    </video>
+    <div class="reel-ui" hidden>
+      <button type="button" class="sound" data-sound aria-pressed="false">
+        <svg class="i-off" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"
+          ><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"></path><path
+            d="m16 9.5 5 5m0-5-5 5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"></path></svg
+        >
+        <svg class="i-on" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"
+          ><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"></path><path
+            d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"></path></svg
+        >
+        <span data-label>{t.soundOn}</span>
+      </button>
+      <button type="button" class="playpause" data-toggle aria-label={t.pause}>
+        <svg class="i-pause" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"
+          ><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"></rect><rect
+            x="14"
+            y="5"
+            width="4"
+            height="14"
+            rx="1"
+            fill="currentColor"></rect></svg
+        >
+        <svg class="i-play" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"
+          ><path d="M7 5v14l12-7z" fill="currentColor"></path></svg
+        >
+      </button>
+    </div>
+  </figure>
+</section>
+
+<script>
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  for (const fig of document.querySelectorAll<HTMLElement>('[data-reel]')) {
+    const v = fig.querySelector('video')!;
+    const ui = fig.querySelector<HTMLElement>('.reel-ui')!;
+    const sound = fig.querySelector<HTMLButtonElement>('[data-sound]')!;
+    const label = sound.querySelector<HTMLElement>('[data-label]')!;
+    const toggle = fig.querySelector<HTMLButtonElement>('[data-toggle]')!;
+    let userPaused = false;
+
+    // JS radi: sakrij standardne kontrole, pokaži naše
+    v.controls = false;
+    ui.hidden = false;
+    v.preload = 'auto';
+
+    const sync = () => {
+      fig.classList.toggle('is-paused', v.paused);
+      toggle.setAttribute('aria-label', (v.paused ? v.dataset.play : v.dataset.pause) ?? '');
+      sound.setAttribute('aria-pressed', String(!v.muted));
+      fig.classList.toggle('has-sound', !v.muted);
+      label.textContent = (v.muted ? v.dataset.soundOn : v.dataset.soundOff) ?? '';
+    };
+    v.addEventListener('play', sync);
+    v.addEventListener('pause', sync);
+    v.addEventListener('volumechange', sync);
+
+    const tryPlay = () => {
+      if (reduce.matches || userPaused) return;
+      v.play().catch(() => sync());
+    };
+
+    // pusti samo dok je video na ekranu
+    new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) tryPlay();
+        else if (!v.paused) v.pause();
+      },
+      { threshold: 0.35 },
+    ).observe(fig);
+
+    sound.addEventListener('click', () => {
+      if (v.muted) {
+        v.muted = false;
+        v.currentTime = 0; // zvuk je složen uz sliku, zato kreni od početka
+        userPaused = false;
+        v.play().catch(() => sync());
+      } else {
+        v.muted = true;
+      }
+      sync();
+    });
+    toggle.addEventListener('click', () => {
+      if (v.paused) {
+        userPaused = false;
+        v.play().catch(() => sync());
+      } else {
+        userPaused = true;
+        v.pause();
+      }
+    });
+    sync();
+  }
+</script>
+
+<style>
+  .reel-section {
+    padding-block: 1rem 4rem;
+  }
+  .reel-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    padding-bottom: 1.25rem;
+  }
+  .reel-head h2 {
+    margin: 0;
+    font-size: var(--step-3);
+    letter-spacing: -0.02em;
+    font-stretch: 90%;
+    line-height: 1;
+  }
+  .reel-head p {
+    margin: 0;
+    max-width: 44ch;
+    color: var(--muted);
+  }
+  .reel {
+    position: relative;
+    margin: 0;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    background: #0b1117;
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--line) 70%, transparent),
+      0 30px 80px -30px rgba(10, 20, 30, 0.55);
+  }
+  .reel video {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+  .reel-ui {
+    position: absolute;
+    left: 0.9rem;
+    right: 0.9rem;
+    bottom: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    pointer-events: none;
+  }
+  .reel-ui[hidden] {
+    display: none;
+  }
+  .reel-ui button {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.5rem;
+    min-width: 2.5rem;
+    padding: 0.45rem 0.95rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(10, 16, 22, 0.55);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    color: #eef1f3;
+    font: inherit;
+    font-size: var(--step--1);
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background-color 160ms,
+      border-color 160ms;
+  }
+  .reel-ui button:hover {
+    background: rgba(10, 16, 22, 0.75);
+    border-color: rgba(255, 255, 255, 0.45);
+  }
+  .reel-ui button:focus-visible {
+    outline: 2px solid var(--cat-iznajmljivanje);
+    outline-offset: 2px;
+  }
+  .reel-ui .playpause {
+    padding: 0;
+  }
+  .sound .i-on,
+  .has-sound .sound .i-off,
+  .playpause .i-play,
+  .is-paused .playpause .i-pause {
+    display: none;
+  }
+  .has-sound .sound .i-on,
+  .is-paused .playpause .i-play {
+    display: block;
+  }
+  /* dok nema zvuka, dugme blago pulsira da se primijeti */
+  @media (prefers-reduced-motion: no-preference) {
+    .reel:not(.has-sound) .sound {
+      animation: nudge 2.4s ease-in-out 2s infinite;
+    }
+    @keyframes nudge {
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(226, 162, 31, 0);
+      }
+      50% {
+        box-shadow: 0 0 0 6px rgba(226, 162, 31, 0.28);
+      }
+    }
+  }
+
+</style>
