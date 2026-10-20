@@ -95,7 +95,7 @@ const jsonLd = {
           '@type': 'WebApplication',
           name: p.name,
           description: p.description ?? p.tagline,
-          applicationCategory: 'BusinessApplication',
+          applicationCategory: p.category === 'igre' ? 'GameApplication' : 'BusinessApplication',
           operatingSystem: 'Web',
           inLanguage: langMeta[lang].locale,
           author: { '@id': personId },

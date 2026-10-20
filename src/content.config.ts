@@ -3,7 +3,7 @@ import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
 export const STATUSES = ['live', 'beta', 'u-izradi', 'ideja'] as const;
-export const CATEGORIES = ['iznajmljivanje', 'alati', 'turizam', 'telekom', 'transport'] as const;
+export const CATEGORIES = ['iznajmljivanje', 'alati', 'turizam', 'telekom', 'transport', 'igre'] as const;
 
 /**
  * Jedan projekat = jedan JSON fajl u src/content/projects/.

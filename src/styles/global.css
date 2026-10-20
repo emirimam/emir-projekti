@@ -16,6 +16,7 @@
   --cat-turizam: #c47d72;
   --cat-telekom: #4d6a8a;
   --cat-transport: #8467a6;
+  --cat-igre: #c8414f;
   --cat-ostalo: #8a96a0;
 
   --font: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
@@ -42,6 +43,7 @@
     --brine: #6cc3cb;
     --cat-telekom: #7f9cc0;
     --cat-transport: #a68bc6;
+    --cat-igre: #f07a86;
   }
 }
 

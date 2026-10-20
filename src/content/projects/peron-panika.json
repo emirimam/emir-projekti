@@ -1,0 +1,23 @@
+{
+  "name": "Peron Panika",
+  "tagline": "Zarazna puzzle igra: izvuci autobuse i ukrcaj gomile putnika",
+  "description": "Tapneš bus da izađe s pretrpanog parkinga i stane na peron. Gomile putnika s obje strane ulaze u krug oko fontane i iskaču u bus svoje boje. Usput stižu tajni autobusi, čunjevi, lanci s ključem, led i špica na vrijeme. Nivoi se generišu beskonačno i svaki ima rješenje. Grafika, zvukovi i muzika su napravljeni kodom, radi u browseru na mobitelu i računaru.",
+  "url": "https://peron-panika.vercel.app",
+  "vercelProject": "peron-panika",
+  "status": "live",
+  "category": "igre",
+  "stack": [
+    "Canvas 2D",
+    "Web Audio",
+    "JavaScript",
+    "Vercel"
+  ],
+  "audience": "Svi koji vole kratke, zarazne puzzle igre",
+  "order": 8,
+  "since": 2026,
+  "en": {
+    "tagline": "Addictive puzzle game: clear the buses, board the crowds",
+    "description": "Tap a bus to pull it out of a jammed parking lot and onto a platform. Crowds stream in from both sides into a circle around a fountain and jump into the bus of their colour. Along the way come mystery buses, traffic cones, chained buses with keys, ice and timed rush hours. Levels are generated endlessly and every one has a solution. Graphics, sound effects and music are all made in code, and it runs in the browser on phone and desktop.",
+    "audience": "Anyone who enjoys short, addictive puzzle games"
+  }
+}
