@@ -1,0 +1,10 @@
+{
+  "name": "Lukavac QR vodič (prvi prototip)",
+  "tagline": "Prvi prototip; zamijenjen projektom Lukavac Info",
+  "description": "Prvi prototip QR vodiča kroz Lukavac. Zamijenjen je projektom Lukavac Info (lukavacv2), pa se ne prikazuje na listi.",
+  "status": "beta",
+  "category": "turizam",
+  "vercelProject": "qr-lukavac",
+  "url": "https://qr-lukavac.vercel.app",
+  "hidden": true
+}

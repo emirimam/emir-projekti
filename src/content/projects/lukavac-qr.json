@@ -1,22 +1,25 @@
 {
-  "name": "Lukavac QR vodič",
-  "tagline": "Skeniraj QR kod na lokaciji i saznaj priču tog mjesta",
-  "description": "Digitalni turistički vodič kroz Lukavac, bez instalacije aplikacije: posjetilac skenira QR kod na lokaciji i otvori priču o tom mjestu. Prve stanice su Trg slobode i Vila Lukavac.",
-  "status": "beta",
+  "name": "Lukavac Info — digitalna info staza",
+  "tagline": "Skeniraj QR kod na tabli: mapa, priča, audio vodič i pečati za nagrade",
+  "description": "Digitalna info staza Lukavca, bez instalacije aplikacije. QR kod na info tabli otvara mapu na mjestu gdje posjetilac stoji, sa putanjama do ostalih lokacija, tekstom, fotografijama i audio pričom na bosanskom, engleskom i njemačkom. Skeniranjem tabli skuplja se digitalni pasoš sa pečatima i nagradama partnera. Turistička zajednica sadržaj, QR kodove i statistiku posjeta vodi kroz admin panel. Projekat Udruženja mladih StartITi, na poziv Turističke zajednice Lukavac.",
+  "status": "live",
   "category": "turizam",
   "stack": [
-    "Web",
+    "Leaflet",
+    "OpenStreetMap",
+    "Supabase",
+    "Vercel",
     "QR"
   ],
-  "audience": "Posjetioci Lukavca",
+  "audience": "Posjetioci i mještani Lukavca, Turistička zajednica Lukavac",
   "order": 7,
-  "vercelProject": "qr-lukavac",
-  "url": "https://qr-lukavac.vercel.app",
-  "hidden": true,
+  "since": 2026,
+  "vercelProject": "lukavacv2",
+  "url": "https://lukavacv2.vercel.app",
   "en": {
-    "name": "Lukavac QR guide",
-    "tagline": "Scan the QR code on site and hear the story of the place",
-    "description": "A digital tourist guide to Lukavac with nothing to install: visitors scan a QR code at each spot. The first stops are Freedom Square and Villa Lukavac.",
-    "audience": "Visitors to Lukavac"
+    "name": "Lukavac Info — digital info trail",
+    "tagline": "Scan the QR code on a board: map, story, audio guide and stamps for rewards",
+    "description": "The Lukavac digital info trail, with nothing to install. A QR code on an info board opens a map right where the visitor stands, with routes to the other places, text, photos and an audio story in Bosnian, English and German. Scanning the boards fills a digital passport with stamps and partner rewards. The tourist board manages content, QR codes and visit statistics in an admin panel. A project of the StartITi youth association, at the invitation of the Lukavac Tourist Board.",
+    "audience": "Visitors and residents of Lukavac, Lukavac Tourist Board"
   }
 }
