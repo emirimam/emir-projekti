@@ -20,7 +20,19 @@ const t = ui[lang];
   <div class="head">
     <span class="swatch" aria-hidden="true"></span>
     <h3>
-      {p.url ? <a href={p.url} rel="noopener" target="_blank">{p.name}<span class="sr-only"> {t.newWindow}</span></a> : p.name}
+      {
+        /* Opisan projekat vodi na svoju stranu; živa adresa ostaje niže u "Adresa". */
+        p.href ? (
+          <a href={p.href}>{p.name}</a>
+        ) : p.url ? (
+          <a href={p.url} rel="noopener" target="_blank">
+            {p.name}
+            <span class="sr-only"> {t.newWindow}</span>
+          </a>
+        ) : (
+          p.name
+        )
+      }
     </h3>
     <p class="tagline">{p.tagline}</p>
   </div>

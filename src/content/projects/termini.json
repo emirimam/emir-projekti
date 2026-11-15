@@ -28,6 +28,38 @@
   "en": {
     "tagline": "Online booking for salons, barbers and dentists",
     "description": "Clients book their own appointment through a link or QR code, with no app and no phone call. Reminders go out on WhatsApp 24 and 2 hours before, with SMS as a fallback for clients without WhatsApp. Team calendar, services, opening hours and contact import.",
-    "audience": "Hairdressers, barbers, beauticians and dentists"
+    "audience": "Hairdressers, barbers, beauticians and dentists",
+    "slug": "booking",
+    "page": {
+      "title": "Termini — online booking with WhatsApp reminders",
+      "description": "Clients book their own slot through a link or QR code. Reminders go out on WhatsApp 24 and 2 hours before, with SMS as fallback. Team calendar included.",
+      "h1": "Termini — clients book themselves, reminders go to WhatsApp",
+      "body": [
+        "A client opens a link or scans a QR code, sees the free slots and picks one. No app to install, no phone call, no messages back and forth.",
+        "Reminders arrive on WhatsApp 24 hours and 2 hours before the appointment. If the client has no WhatsApp, an SMS goes out instead. Built for hairdressers, dentists and anyone who works by appointment."
+      ],
+      "features": [
+        "Booking through a link or QR code, with no app",
+        "WhatsApp reminders 24 and 2 hours before, SMS as fallback",
+        "Team calendar, with services and opening hours",
+        "Contact import from your phone"
+      ]
+    }
+  },
+  "slug": "termini",
+  "page": {
+    "title": "Termini — online zakazivanje s WhatsApp podsjetnikom",
+    "description": "Klijenti sami zakažu termin preko linka ili QR koda. Podsjetnik stiže na WhatsApp 24 i 2 sata prije, a bez WhatsAppa ide SMS. Kalendar za cijeli tim.",
+    "h1": "Termini — klijent se zakaže sam, podsjetnik ide na WhatsApp",
+    "body": [
+      "Klijent otvori link ili skenira QR kod, vidi slobodne termine i izabere svoj. Bez instaliranja aplikacije, bez poziva, bez poruka naprijed-nazad.",
+      "Podsjetnik stiže na WhatsApp 24 sata i 2 sata prije termina. Ako klijent nema WhatsApp, šalje se SMS. Napravljeno za frizere, stomatologe i sve koji rade po terminima."
+    ],
+    "features": [
+      "Zakazivanje preko linka ili QR koda, bez aplikacije",
+      "WhatsApp podsjetnik 24 i 2 sata prije, SMS kao rezerva",
+      "Kalendar za cijeli tim, s uslugama i radnim vremenom",
+      "Uvoz kontakata iz telefona"
+    ]
   }
 }

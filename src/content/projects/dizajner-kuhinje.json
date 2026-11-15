@@ -16,6 +16,36 @@
     "name": "Kitchen Designer",
     "tagline": "Lay out a custom kitchen and get a cutting list",
     "description": "Enter the room dimensions, arrange the units and the app calculates the board sizes to cut. Working title KROJ.",
-    "audience": "Carpenters and anyone fitting a kitchen"
+    "audience": "Carpenters and anyone fitting a kitchen",
+    "slug": "kitchen-designer",
+    "page": {
+      "title": "KROJ kitchen designer — cut list for panels",
+      "description": "Enter your room dimensions, arrange the units and the app works out the panel measurements for cutting. A free tool for fitters and homeowners.",
+      "h1": "KROJ kitchen designer — from room size to a cut list",
+      "body": [
+        "Enter the room dimensions, arrange the units and the app works out the board measurements for cutting. The job usually done on paper and in your head, where a centimetre of error costs money.",
+        "Made for fitters who build kitchens and for homeowners who want to know what they are in for before they call one."
+      ],
+      "features": [
+        "Enter room dimensions and arrange the units",
+        "Automatic panel measurements for cutting",
+        "Runs in the browser, nothing to install"
+      ]
+    }
+  },
+  "slug": "dizajner-kuhinje",
+  "page": {
+    "title": "Dizajner kuhinje KROJ — mjere ploča za kroj",
+    "description": "Unesi dimenzije prostora, rasporedi elemente i aplikacija izračuna mjere ploča za kroj. Besplatan alat za majstore i vlasnike stanova.",
+    "h1": "Dizajner kuhinje KROJ — od dimenzija do mjera za kroj",
+    "body": [
+      "Uneseš dimenzije prostora, rasporediš elemente i aplikacija izračuna mjere ploča za kroj. Ono što se obično radi na papiru i u glavi, uz grešku od centimetar koja se plati.",
+      "Namijenjeno majstorima koji prave kuhinje i vlasnicima stanova koji žele znati šta ih čeka prije nego zovu majstora."
+    ],
+    "features": [
+      "Unos dimenzija prostora i raspored elemenata",
+      "Automatski izračun mjera ploča za kroj",
+      "Radi u browseru, bez instalacije"
+    ]
   }
 }

@@ -5,6 +5,30 @@ import { glob } from 'astro/loaders';
 export const STATUSES = ['live', 'beta', 'u-izradi', 'ideja'] as const;
 export const CATEGORIES = ['iznajmljivanje', 'alati', 'turizam', 'telekom', 'transport', 'igre'] as const;
 
+/** Mala slova, cifre i crtice — ovo postaje adresa strane projekta. */
+const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug: samo mala slova, cifre i crtice.');
+
+/**
+ * Tekst vlastite strane projekta. Prazno = strana se ne pravi,
+ * projekat ostaje samo red na početnoj.
+ */
+const page = z
+  .object({
+    /** <title> strane. Prazno: "Ime — tagline". Google prikazuje ~60 znakova. */
+    title: z.string().max(70).optional(),
+    /** Meta opis. Prazno: `description` projekta. Google prikazuje ~155 znakova. */
+    description: z.string().max(170).optional(),
+    /** Naslov na strani. Prazno: ime projekta. */
+    h1: z.string().optional(),
+    /** Pasusi glavnog teksta. */
+    body: z.array(z.string()).default([]),
+    /** Lista osobina ispod teksta. */
+    features: z.array(z.string()).default([]),
+    /** Sitna napomena na dnu (npr. čiji je projekat). */
+    note: z.string().optional(),
+  })
+  .default({ body: [], features: [] });
+
 /**
  * Jedan projekat = jedan JSON fajl u src/content/projects/.
  * Novi projekat: kopiraj postojeći fajl, promijeni podatke, gotovo.
@@ -16,6 +40,9 @@ const projects = defineCollection({
     tagline: z.string().max(90),
     description: z.string(),
     url: z.url().optional(),
+    /** Adresa vlastite strane. Prazno = ime JSON fajla. */
+    slug: slug.optional(),
+    page,
     /** Ime projekta na Vercelu — povezuje opis sa automatskim podacima. */
     vercelProject: z.string().optional(),
     status: z.enum(STATUSES),
@@ -47,8 +74,11 @@ const projects = defineCollection({
         tagline: z.string().max(90).optional(),
         description: z.string().optional(),
         audience: z.string().optional(),
+        /** Engleski slug; prazno preuzima bosanski. */
+        slug: slug.optional(),
+        page,
       })
-      .default({}),
+      .default({ page: { body: [], features: [] } }),
   }),
 });
 

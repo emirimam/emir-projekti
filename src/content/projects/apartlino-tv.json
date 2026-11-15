@@ -28,6 +28,40 @@
   "en": {
     "tagline": "A welcome screen for guests on the apartment TV",
     "description": "Guests turn on the TV and see their name, the Wi-Fi password, house rules, the weather and events in town, plus one-tap Netflix and YouTube. Guest names fill in automatically from booking emails. Free for owners.",
-    "audience": "Hosts in Bosnia, Croatia and Serbia"
+    "audience": "Hosts in Bosnia, Croatia and Serbia",
+    "slug": "apartlino-tv",
+    "page": {
+      "title": "Apartlino TV — guest information screen for rentals",
+      "description": "Guests turn on the TV and see their name, Wi-Fi, house rules, weather and city events. Names fill in automatically from reservation emails. Free.",
+      "h1": "Apartlino TV — guests turn on the TV and it is all there",
+      "body": [
+        "Guests ask the same questions every time: what is the Wi-Fi password, when is check-out, where can we eat. Apartlino TV puts the answers on the television home screen, so nobody has to message the host at midnight.",
+        "Guest names fill in automatically from Booking.com and Airbnb reservation emails — the host types nothing. Netflix and YouTube launch from the same screen. Free for apartment owners."
+      ],
+      "features": [
+        "Guest name, Wi-Fi password, house rules and check-out time on the home screen",
+        "Weather and city events, for several cities",
+        "Netflix and YouTube launch straight from the screen",
+        "Names are read automatically from reservation emails",
+        "Runs on an Android TV box or a smart television"
+      ]
+    }
+  },
+  "slug": "apartlino-tv",
+  "page": {
+    "title": "Apartlino TV — info ekran za goste apartmana",
+    "description": "Gost uključi TV i vidi svoje ime, Wi-Fi, kućni red, prognozu i događaje u gradu. Imena se popunjavaju sama iz rezervacijskih mailova. Besplatno.",
+    "h1": "Apartlino TV — gost uključi TV i sve piše na ekranu",
+    "body": [
+      "Najviše pitanja gosta su uvijek ista: koja je Wi-Fi šifra, kad je odjava, gdje se jede. Apartlino TV ih stavi na početni ekran televizora, pa gost ne piše poruku u pola noći.",
+      "Imena gostiju se popunjavaju sama iz rezervacijskih mailova s Booking.coma i Airbnba — vlasnik ne upisuje ništa. Netflix i YouTube se pokreću s istog ekrana. Besplatno za vlasnike apartmana."
+    ],
+    "features": [
+      "Ime gosta, Wi-Fi šifra, kućni red i vrijeme odjave na početnom ekranu",
+      "Vremenska prognoza i događaji u gradu, za više gradova",
+      "Netflix i YouTube se pokreću direktno s ekrana",
+      "Imena se čitaju sama iz rezervacijskih mailova",
+      "Radi na Android TV kutiji ili na pametnom televizoru"
+    ]
   }
 }

@@ -1,10 +1,19 @@
 import { getCollection } from 'astro:content';
 import vercel from '../data/vercel.json';
 import type { CATEGORIES, STATUSES } from '../content.config';
-import { ui, type Lang } from '../i18n';
+import { LANGS, ui, type Lang } from '../i18n';
 
 export type Status = (typeof STATUSES)[number];
 export type Category = (typeof CATEGORIES)[number] | 'ostalo';
+
+export interface ProjectPage {
+  title?: string;
+  description?: string;
+  h1?: string;
+  body: string[];
+  features: string[];
+  note?: string;
+}
 
 interface VercelProject {
   name: string;
@@ -21,8 +30,15 @@ export interface Project {
   name: string;
   tagline: string;
   description?: string;
+  /** Vanjska adresa žive aplikacije. */
   url?: string;
   host?: string;
+  /** Adresa vlastite strane na ovom sajtu, ako je projekat opisan za nju. */
+  href?: string;
+  /** Slug po jeziku — za hreflang parove. */
+  slugs?: Record<Lang, string>;
+  /** Tekst vlastite strane na traženom jeziku. */
+  page?: ProjectPage;
   status: Status;
   category: Category;
   stack: string[];
@@ -52,6 +68,21 @@ const prettify = (slug: string) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
+/** Adresa strane projekta: /slug/ na bosanskom, /en/slug/ na engleskom. */
+export const projectPath = (lang: Lang, slugs: Record<Lang, string>) =>
+  lang === 'en' ? `/en/${slugs.en}/` : `/${slugs.bs}/`;
+
+/**
+ * Strana postoji samo za jezik na kojem ima napisan tekst — da engleska
+ * adresa nikad ne prikaže bosanski tekst i da hreflang ne laže.
+ */
+const emptyPage: ProjectPage = { body: [], features: [] };
+const pageFor = (lang: Lang, data: { page?: Partial<ProjectPage>; en: { page?: Partial<ProjectPage> } }) => {
+  const own = (lang === 'en' ? data.en.page : data.page) ?? emptyPage;
+  return { ...emptyPage, ...own } satisfies ProjectPage;
+};
+export const hasPage = (p: ProjectPage | undefined) => !!p && p.body.length > 0;
+
 export async function getProjects(lang: Lang = 'bs'): Promise<Project[]> {
   const entries = await getCollection('projects');
   const remote = (vercel.projects ?? []) as VercelProject[];
@@ -72,7 +103,10 @@ export async function getProjects(lang: Lang = 'bs'): Promise<Project[]> {
     if (r) used.add(r.name);
     if (data.hidden) return [];
     const url = data.url ?? r?.url;
-    const t = lang === 'en' ? data.en : {};
+    const t = lang === 'en' ? data.en : ({} as Partial<typeof data.en>);
+    const bsSlug = data.slug ?? id;
+    const slugs = { bs: bsSlug, en: data.en.slug ?? bsSlug } satisfies Record<Lang, string>;
+    const page = pageFor(lang, data);
     return {
       id,
       name: t.name ?? data.name,
@@ -80,6 +114,9 @@ export async function getProjects(lang: Lang = 'bs'): Promise<Project[]> {
       description: t.description ?? data.description,
       url,
       host: hostOf(url),
+      href: hasPage(page) ? projectPath(lang, slugs) : undefined,
+      slugs,
+      page,
       status: data.status,
       category: data.category,
       stack: data.stack,
@@ -110,6 +147,34 @@ export async function getProjects(lang: Lang = 'bs'): Promise<Project[]> {
     }));
 
   return [...described, ...discovered].sort((a, b) => a.order - b.order || a.name.localeCompare(b.name, lang));
+}
+
+/**
+ * Rute za strane projekata (getStaticPaths). Uz projekat vraća i
+ * hreflang parove i tri srodna projekta za interno povezivanje.
+ */
+export async function getProjectPaths(lang: Lang) {
+  const loaded = await Promise.all(LANGS.map(async (l) => [l, await getProjects(l)] as const));
+  const byLang = Object.fromEntries(loaded) as Record<Lang, Project[]>;
+
+  const pages = byLang[lang].filter(
+    (p): p is Project & { slugs: Record<Lang, string>; page: ProjectPage } => !!p.slugs && hasPage(p.page),
+  );
+
+  return pages.map((p) => {
+    const alternates: Partial<Record<Lang, string>> = {};
+    for (const l of LANGS) {
+      const twin = byLang[l].find((q) => q.id === p.id);
+      if (twin?.slugs && hasPage(twin.page)) alternates[l] = projectPath(l, twin.slugs);
+    }
+    // Prvo isti kategorija, pa ostalo — da svaka strana ima tri izlaza.
+    const sameCategory = pages.filter((q) => q.id !== p.id && q.category === p.category);
+    const others = pages.filter((q) => q.id !== p.id && q.category !== p.category);
+    return {
+      params: { slug: lang === 'en' ? p.slugs.en : p.slugs.bs },
+      props: { project: p, alternates, related: [...sameCategory, ...others].slice(0, 3) },
+    };
+  });
 }
 
 export const syncedAt: string | null = vercel.syncedAt;

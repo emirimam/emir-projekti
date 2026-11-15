@@ -10,10 +10,26 @@ interface Props {
   description?: string;
   /** false za stranice koje ne treba indeksirati (npr. 404). */
   index?: boolean;
+  /**
+   * Adresa iste stranice po jeziku, za hreflang. Prazno = početne strane.
+   * Jezik koji nije u listi ne dobija hreflang — tako par nikad ne laže.
+   */
+  alternates?: Partial<Record<Lang, string>>;
+  /** og:type — "article" za strane projekata. */
+  ogType?: string;
 }
-const { lang, title = ui[lang].title, description = ui[lang].description, index = true } = Astro.props;
+const {
+  lang,
+  title = ui[lang].title,
+  description = ui[lang].description,
+  index = true,
+  alternates,
+  ogType = 'website',
+} = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const alt = (l: Lang) => new URL(langMeta[l].path, Astro.site);
+const paths = alternates ?? Object.fromEntries(LANGS.map((l) => [l, langMeta[l].path]));
+const altLangs = LANGS.filter((l) => !!paths[l]);
+const alt = (l: Lang) => new URL(paths[l]!, Astro.site);
 const ogImage = new URL(`/og-${lang}.png`, Astro.site);
 // Kod iz Google Search Console (HTML tag metoda). Postavlja se u Vercel varijablama.
 const googleVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION || site.googleSiteVerification;
@@ -36,10 +52,10 @@ const googleVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION || si
       index && (
         <>
           <link rel="canonical" href={canonical} />
-          {LANGS.map((l) => (
+          {altLangs.map((l) => (
             <link rel="alternate" hreflang={langMeta[l].locale} href={alt(l)} />
           ))}
-          <link rel="alternate" hreflang="x-default" href={alt('bs')} />
+          {paths.bs && <link rel="alternate" hreflang="x-default" href={alt('bs')} />}
         </>
       )
     }
@@ -50,7 +66,7 @@ const googleVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION || si
     <meta name="theme-color" content="#eef1f3" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#131b22" media="(prefers-color-scheme: dark)" />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={site.fullName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -61,7 +77,7 @@ const googleVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION || si
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={ui[lang].ogAlt} />
     <meta property="og:locale" content={langMeta[lang].og} />
-    {LANGS.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={langMeta[l].og} />)}
+    {altLangs.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={langMeta[l].og} />)}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />

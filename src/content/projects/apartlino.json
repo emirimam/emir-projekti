@@ -18,6 +18,38 @@
   "en": {
     "tagline": "Short-term rental management in one place",
     "description": "A booking calendar with iCal sync (Airbnb, Booking.com), automatic cleaning tasks and user accounts for the whole team. Also works as an app on your phone.",
-    "audience": "Apartment owners and property managers"
+    "audience": "Apartment owners and property managers",
+    "slug": "apartlino",
+    "page": {
+      "title": "Apartlino — rental management and booking calendar",
+      "description": "Booking calendar with iCal sync for Airbnb and Booking.com, automatic cleaning tasks and accounts for your whole team. Works as a phone app too.",
+      "h1": "Apartlino — calendar, cleaning and team in one place",
+      "body": [
+        "Apartlino runs bookings for several apartments from a single calendar. Dates from Airbnb and Booking.com are pulled in over iCal sync, so there are no double bookings and no copying dates by hand.",
+        "When a guest checks out, the cleaning task is created automatically and shows up for whoever cleans. Every team member has their own account and sees only what they need."
+      ],
+      "features": [
+        "iCal sync with Airbnb and Booking.com",
+        "Automatic cleaning tasks after check-out",
+        "Accounts for the whole team, with separate permissions",
+        "Works as a phone app, with nothing to install from a store"
+      ]
+    }
+  },
+  "slug": "apartlino",
+  "page": {
+    "title": "Apartlino — upravljanje apartmanima i rezervacijama",
+    "description": "Kalendar rezervacija s iCal sinhronizacijom za Airbnb i Booking, automatski zadaci čišćenja i nalozi za cijeli tim. Radi i kao aplikacija na telefonu.",
+    "h1": "Apartlino — kalendar, čišćenje i tim na jednom mjestu",
+    "body": [
+      "Apartlino vodi rezervacije za više apartmana iz jednog kalendara. Termini s Airbnba i Booking.coma se uvlače preko iCal sinhronizacije, pa nema duplih rezervacija ni prepisivanja datuma rukom.",
+      "Kad gost ode, zadatak čišćenja se napravi sam i vidi ga osoba koja čisti. Svaki član tima ima svoj nalog i vidi samo ono što mu treba."
+    ],
+    "features": [
+      "iCal sinhronizacija s Airbnbom i Booking.comom",
+      "Automatski zadaci čišćenja nakon odjave gosta",
+      "Nalozi za cijeli tim, s različitim pravima",
+      "Radi i kao aplikacija na telefonu, bez instalacije iz trgovine"
+    ]
   }
 }

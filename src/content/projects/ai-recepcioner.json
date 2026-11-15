@@ -14,6 +14,36 @@
     "name": "AI receptionist",
     "tagline": "A virtual assistant that answers calls and transfers them",
     "description": "A voice assistant for businesses on VoIP telephony: it answers common questions and connects callers to the right person.",
-    "audience": "Businesses that take a lot of calls"
+    "audience": "Businesses that take a lot of calls",
+    "slug": "ai-receptionist",
+    "page": {
+      "title": "AI receptionist — voice assistant for business calls",
+      "description": "A voice assistant for companies on VoIP telephony: it answers common questions and puts the caller through to the right person. In development.",
+      "h1": "AI receptionist — the call gets an answer, not a hold tone",
+      "body": [
+        "A voice assistant for companies on VoIP telephony: it answers common questions and puts the caller through to the right person, without anyone sitting on a switchboard.",
+        "The project is in development — this page is here to collect enquiries until it opens up."
+      ],
+      "features": [
+        "Answers common questions by voice",
+        "Puts the caller through to the right person",
+        "Runs on your existing VoIP system"
+      ]
+    }
+  },
+  "slug": "ai-recepcioner",
+  "page": {
+    "title": "AI recepcioner — glasovni asistent za poslovne pozive",
+    "description": "Glasovni asistent za firme na VoIP telefoniji: odgovara na česta pitanja i spaja pozivaoca s pravom osobom. U razvoju.",
+    "h1": "AI recepcioner — poziv dobije odgovor, ne čekanje",
+    "body": [
+      "Glasovni asistent za firme na VoIP telefoniji: odgovara na česta pitanja i spaja pozivaoca s pravom osobom, bez da neko sjedi na centrali.",
+      "Projekat je u razvoju — strana stoji da pokupi upite dok se ne otvori za korištenje."
+    ],
+    "features": [
+      "Odgovara na česta pitanja glasom",
+      "Spaja pozivaoca s pravom osobom",
+      "Radi na postojećoj VoIP centrali"
+    ]
   }
 }

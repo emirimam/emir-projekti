@@ -18,6 +18,36 @@
   "en": {
     "tagline": "Addictive puzzle game: clear the buses, board the crowds",
     "description": "Tap a bus to pull it out of a jammed parking lot and onto a platform. Crowds stream in from both sides into a circle around a fountain and jump into the bus of their colour. Along the way come mystery buses, traffic cones, chained buses with keys, ice and timed rush hours. Levels are generated endlessly and every one has a solution. Graphics, sound effects and music are all made in code, and it runs in the browser on phone and desktop.",
-    "audience": "Anyone who enjoys short, addictive puzzle games"
+    "audience": "Anyone who enjoys short, addictive puzzle games",
+    "slug": "peron-panika",
+    "page": {
+      "title": "Peron Panika — free browser puzzle game",
+      "description": "Tap a bus to get it out of a jammed car park and onto its platform. Levels generate endlessly and every one is solvable. Plays on phone and desktop.",
+      "h1": "Peron Panika — pull the bus out of the car park and onto its platform",
+      "body": [
+        "Tap a bus to pull it out of a jammed car park and onto a platform. Crowds stream in from both sides into a circle around the fountain and jump into the bus of their colour. Along the way come mystery buses, traffic cones, chained buses with keys, ice and timed rush hours.",
+        "Levels are generated endlessly and every one has a solution. The graphics, sound effects and music are all made in code, with no asset files. It runs in the browser, on phone and desktop."
+      ],
+      "features": [
+        "Endlessly generated levels, every one solvable",
+        "Graphics, sound and music made in code",
+        "Plays in the browser, nothing to install"
+      ]
+    }
+  },
+  "slug": "peron-panika",
+  "page": {
+    "title": "Peron Panika — besplatna puzzle igra u browseru",
+    "description": "Tapneš bus da izađe s pretrpanog parkinga i stane na peron. Nivoi se generišu beskonačno i svaki ima rješenje. Radi na mobitelu i računaru.",
+    "h1": "Peron Panika — izvuci bus s parkinga i dovezi ga na peron",
+    "body": [
+      "Tapneš bus da izađe s pretrpanog parkinga i stane na peron. Gomile putnika s obje strane ulaze u krug oko fontane i iskoče u bus svoje boje. Usput stižu tajni autobusi, čunjevi, lanci s ključem, led i špica na vrijeme.",
+      "Nivoi se generišu beskonačno i svaki ima rješenje. Grafika, zvukovi i muzika su napravljeni kodom, bez gotovih fajlova. Radi u browseru, na mobitelu i računaru."
+    ],
+    "features": [
+      "Beskonačno generisani nivoi, svaki rješiv",
+      "Grafika, zvuk i muzika napravljeni kodom",
+      "Igra se u browseru, bez instalacije"
+    ]
   }
 }

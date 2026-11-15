@@ -15,6 +15,36 @@
   "en": {
     "tagline": "Built-in wardrobe configurator with pricing and PDF quotes",
     "description": "Enter the alcove size, pick columns, fittings and materials, and see the wardrobe and an estimated price right away. Finish with a PDF quote for the client.",
-    "audience": "Joinery workshops and their clients"
+    "audience": "Joinery workshops and their clients",
+    "slug": "wardrobe",
+    "page": {
+      "title": "Ateljé Plakar — wardrobe configurator with PDF quote",
+      "description": "Enter the alcove dimensions, pick columns, fittings and materials, see the wardrobe and a price estimate at once, then generate a PDF quote.",
+      "h1": "Ateljé Plakar — wardrobe configurator with a PDF quote",
+      "body": [
+        "Enter the alcove dimensions, pick the columns, fittings and materials, and see the wardrobe straight away along with a price estimate. The client does not wait for someone to get back to them.",
+        "At the end it generates a PDF quote, ready to send — so the joiner does not write the specification out by hand."
+      ],
+      "features": [
+        "Alcove dimensions, columns, fittings and materials",
+        "The wardrobe and a price estimate at the same moment",
+        "A PDF quote for the client in one click"
+      ]
+    }
+  },
+  "slug": "plakar",
+  "page": {
+    "title": "Ateljé Plakar — konfigurator plakara s PDF ponudom",
+    "description": "Unesi dimenzije niše, izaberi kolone, elemente i materijale, odmah vidiš izgled plakara i procjenu cijene, pa generišeš PDF ponudu za klijenta.",
+    "h1": "Ateljé Plakar — konfigurator plakara s PDF ponudom",
+    "body": [
+      "Uneseš dimenzije niše, izabereš kolone, elemente i materijale i odmah vidiš kako plakar izgleda, uz procjenu cijene. Klijent ne čeka da mu neko javi.",
+      "Na kraju se generiše PDF ponuda, gotova za slanje — pa majstor nema posla s ispisivanjem specifikacije rukom."
+    ],
+    "features": [
+      "Dimenzije niše, kolone, elementi i materijali",
+      "Izgled plakara i procjena cijene u istom trenutku",
+      "PDF ponuda za klijenta na jedan klik"
+    ]
   }
 }

@@ -1,0 +1,599 @@
+---
+import Base from '../layouts/Base.astro';
+import FiberField from './FiberField.astro';
+import { langMeta, relativeDate, ui, type Lang } from '../i18n';
+import { site } from '../site';
+import type { Project, ProjectPage as PageText } from '../lib/projects';
+
+interface Props {
+  lang: Lang;
+  project: Project & { slugs: Record<Lang, string>; page: PageText };
+  /** Adresa iste strane po jeziku; jezik bez teksta nije u listi. */
+  alternates: Partial<Record<Lang, string>>;
+  related: Project[];
+}
+const { lang, project: p, alternates, related } = Astro.props;
+const t = ui[lang];
+const page = p.page;
+
+const h1 = page.h1 ?? p.name;
+const title = page.title ?? `${p.name} — ${p.tagline}`;
+const description = page.description ?? p.description ?? p.tagline;
+
+const origin = Astro.site!.origin;
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const homeUrl = new URL(langMeta[lang].path, Astro.site).href;
+const personId = `${origin}/#person`;
+const websiteId = `${origin}/#website`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': personId,
+      name: site.fullName,
+      url: `${origin}/`,
+      ...(site.profiles.length ? { sameAs: site.profiles } : {}),
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: title,
+      description,
+      inLanguage: langMeta[lang].locale,
+      isPartOf: { '@id': websiteId },
+      mainEntity: { '@id': `${pageUrl}#app` },
+      breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+      ...(p.updatedAt ? { dateModified: p.updatedAt } : {}),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: t.home, item: homeUrl },
+        { '@type': 'ListItem', position: 2, name: p.name, item: pageUrl },
+      ],
+    },
+    {
+      '@type': 'WebApplication',
+      '@id': `${pageUrl}#app`,
+      name: p.name,
+      description: p.description ?? p.tagline,
+      applicationCategory: p.category === 'igre' ? 'GameApplication' : 'BusinessApplication',
+      operatingSystem: 'Web',
+      inLanguage: langMeta[lang].locale,
+      author: { '@id': personId },
+      // Strana projekta je kanonska adresa; živa aplikacija ide u sameAs.
+      url: pageUrl,
+      ...(p.url ? { sameAs: p.url } : {}),
+      ...(p.stack.length ? { keywords: p.stack.join(', ') } : {}),
+      ...(p.video
+        ? {
+            video: {
+              '@type': 'VideoObject',
+              name: p.video.title ?? t.video(p.name),
+              description: p.description ?? p.tagline,
+              thumbnailUrl: new URL(p.video.poster, Astro.site).href,
+              contentUrl: new URL(p.video.src, Astro.site).href,
+              uploadDate: `${p.video.uploadDate}T12:00:00+02:00`,
+              duration: `PT${p.video.duration}S`,
+              width: p.video.width,
+              height: p.video.height,
+              inLanguage: langMeta[lang].locale,
+            },
+          }
+        : {}),
+    },
+  ],
+};
+---
+
+<Base lang={lang} title={title} description={description} alternates={alternates} ogType="article">
+  <FiberField />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
+
+  <header class="wrap top">
+    <a class="mark" href={langMeta[lang].path}>
+      <svg viewBox="0 0 32 32" width="22" height="22" aria-hidden="true"
+        ><polygon points="16,3 28,10 16,17 4,10" fill="var(--c)" opacity=".7"></polygon><polygon
+          points="4,10 16,17 16,30 4,23"
+          fill="var(--c)"></polygon><polygon
+          points="28,10 16,17 16,30 28,23"
+          fill="color-mix(in oklab, var(--c) 70%, black)"></polygon></svg
+      >
+      {site.fullName}
+    </a>
+    <nav class="lang" aria-label={t.langSwitch}>
+      {
+        (Object.keys(langMeta) as Lang[]).map((l) => (
+          <a
+            href={alternates[l] ?? langMeta[l].path}
+            hreflang={l}
+            lang={l}
+            aria-current={l === lang ? 'true' : undefined}
+            title={langMeta[l].label}
+          >
+            {langMeta[l].short}
+          </a>
+        ))
+      }
+    </nav>
+  </header>
+
+  <main class="wrap" data-cat={p.category}>
+    <nav class="crumbs" aria-label={t.home}>
+      <a href={langMeta[lang].path}>{t.home}</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{p.name}</span>
+    </nav>
+
+    <article>
+      <div class="intro">
+        <span class="swatch" aria-hidden="true"></span>
+        <h1>{h1}</h1>
+        <p class="tagline">{p.tagline}</p>
+        <p class="badges">
+          <span class="status" data-status={p.status}>{t.status[p.status]}</span>
+          <span class="dot" aria-hidden="true">·</span>
+          <span>{t.category[p.category]}</span>
+        </p>
+        {
+          p.url && (
+            <a class="btn" href={p.url} rel="noopener" target="_blank">
+              {t.project.open}
+              <span class="sr-only"> {t.newWindow}</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"
+                ><path
+                  d="M7 17 17 7M9 7h8v8"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path></svg
+              >
+            </a>
+          )
+        }
+      </div>
+
+      {
+        p.video && (
+          <figure class="clip">
+            <video
+              src={p.video.src}
+              poster={p.video.poster}
+              controls
+              playsinline
+              preload="none"
+              width={p.video.width}
+              height={p.video.height}
+              aria-label={t.video(p.name)}
+            />
+            <figcaption>{t.videoNote(p.video.duration)}</figcaption>
+          </figure>
+        )
+      }
+
+      <div class="cols">
+        <div class="prose">
+          <h2>{t.project.about}</h2>
+          {page.body.map((par) => <p>{par}</p>)}
+
+          {
+            page.features.length > 0 && (
+              <>
+                <h2>{t.project.features}</h2>
+                <ul>{page.features.map((f) => <li>{f}</li>)}</ul>
+              </>
+            )
+          }
+          {page.note && <p class="note">{page.note}</p>}
+        </div>
+
+        <dl class="meta">
+          {
+            p.audience && (
+              <div>
+                <dt>{t.audience}</dt>
+                <dd>{p.audience}</dd>
+              </div>
+            )
+          }
+          {
+            p.stack.length > 0 && (
+              <div>
+                <dt>{t.meta.stack}</dt>
+                <dd>{p.stack.join(', ')}</dd>
+              </div>
+            )
+          }
+          {
+            p.host && (
+              <div>
+                <dt>{t.meta.address}</dt>
+                <dd>
+                  <a href={p.url} rel="noopener" target="_blank">{p.host}</a>
+                </dd>
+              </div>
+            )
+          }
+          {
+            p.updatedAt && (
+              <div>
+                <dt>{t.meta.updated}</dt>
+                <dd>
+                  <time datetime={p.updatedAt}>{relativeDate(p.updatedAt, lang)}</time>
+                </dd>
+              </div>
+            )
+          }
+        </dl>
+      </div>
+    </article>
+
+    {
+      related.length > 0 && (
+        <section class="related" aria-labelledby="srodni">
+          <h2 id="srodni">{t.project.related}</h2>
+          <ul>
+            {related.map((r) => (
+              <li data-cat={r.category}>
+                <a href={r.href ?? langMeta[lang].path}>
+                  <span class="swatch" aria-hidden="true" />
+                  <strong>{r.name}</strong>
+                  <span class="rel-tag">{r.tagline}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a class="all" href={`${langMeta[lang].path}#projekti`}>{t.project.backToAll}</a>
+        </section>
+      )
+    }
+  </main>
+
+  <footer class="wrap foot">
+    <p>© {new Date().getFullYear()} {site.fullName}, {t.place}</p>
+  </footer>
+</Base>
+
+<style>
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 1.5rem;
+    font-size: var(--step--1);
+  }
+  .mark {
+    --c: var(--cat-iznajmljivanje);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 650;
+    font-size: var(--step-0);
+  }
+  .lang {
+    display: flex;
+    padding: 0.2rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+  .lang a {
+    min-width: 2.5rem;
+    min-height: 2rem;
+    display: grid;
+    place-items: center;
+    padding: 0 0.6rem;
+    border-radius: 999px;
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+  .lang a[aria-current] {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  main {
+    --c: var(--cat-ostalo);
+  }
+  main[data-cat='iznajmljivanje'] {
+    --c: var(--cat-iznajmljivanje);
+  }
+  main[data-cat='alati'] {
+    --c: var(--cat-alati);
+  }
+  main[data-cat='turizam'] {
+    --c: var(--cat-turizam);
+  }
+  main[data-cat='telekom'] {
+    --c: var(--cat-telekom);
+  }
+  main[data-cat='transport'] {
+    --c: var(--cat-transport);
+  }
+  main[data-cat='igre'] {
+    --c: var(--cat-igre);
+  }
+
+  .crumbs {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding-block: 1rem 2rem;
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+  .crumbs a {
+    color: var(--muted);
+  }
+
+  .intro {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 1rem;
+    max-width: 48rem;
+  }
+  .swatch {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.5em;
+    background: var(--c);
+    transform: rotate(45deg) skew(-8deg, -8deg);
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--step-4);
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    font-stretch: 85%;
+    text-wrap: balance;
+  }
+  .tagline,
+  .badges,
+  .intro .btn {
+    grid-column: 2;
+  }
+  .tagline {
+    margin: 1.25rem 0 0;
+    font-size: var(--step-1);
+    line-height: 1.45;
+    color: var(--muted);
+    max-width: 40ch;
+  }
+  .badges {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 1.25rem 0 0;
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+  .dot {
+    color: var(--line);
+  }
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .status::before {
+    content: '';
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--muted);
+  }
+  .status[data-status='live']::before {
+    background: #2f9e5b;
+    box-shadow: 0 0 0 3px color-mix(in oklab, #2f9e5b 25%, transparent);
+  }
+  .status[data-status='beta']::before {
+    background: var(--c);
+  }
+  .status[data-status='u-izradi']::before {
+    background: transparent;
+    border: 2px solid var(--c);
+  }
+  .status[data-status='ideja']::before {
+    background: transparent;
+    border: 2px dashed var(--muted);
+  }
+
+  .btn {
+    margin-top: 1.75rem;
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.7rem 1.35rem;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .clip {
+    margin: 3rem 0 0;
+    max-width: 48rem;
+  }
+  .clip video {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border-radius: 0.75rem;
+    background: #13212e;
+    box-shadow: 0 0 0 1px var(--line);
+  }
+  .clip figcaption {
+    margin-top: 0.5rem;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+
+  .cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(14rem, 0.7fr);
+    gap: 2rem 3.5rem;
+    padding-block: 3rem 4rem;
+    border-top: 1px solid var(--line);
+    margin-top: 3rem;
+  }
+  .prose h2 {
+    margin: 2rem 0 0.75rem;
+    font-size: var(--step-2);
+    letter-spacing: -0.015em;
+    font-stretch: 90%;
+  }
+  .prose h2:first-child {
+    margin-top: 0;
+  }
+  .prose p {
+    margin: 0 0 1rem;
+    max-width: 62ch;
+    line-height: 1.6;
+  }
+  .prose ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    max-width: 62ch;
+  }
+  .prose li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+  }
+  .prose li::marker {
+    color: var(--c);
+  }
+  .note {
+    margin-top: 1.5rem;
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+
+  .meta {
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    font-size: var(--step--1);
+  }
+  .meta dt {
+    color: var(--muted);
+    margin-bottom: 0.15rem;
+  }
+  .meta dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .related {
+    padding-block: 2.5rem 1rem;
+    border-top: 1px solid var(--line);
+  }
+  .related h2 {
+    margin: 0 0 1.25rem;
+    font-size: var(--step-2);
+    font-stretch: 90%;
+  }
+  .related ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 1rem;
+  }
+  .related li {
+    --c: var(--cat-ostalo);
+  }
+  .related li[data-cat='iznajmljivanje'] {
+    --c: var(--cat-iznajmljivanje);
+  }
+  .related li[data-cat='alati'] {
+    --c: var(--cat-alati);
+  }
+  .related li[data-cat='turizam'] {
+    --c: var(--cat-turizam);
+  }
+  .related li[data-cat='telekom'] {
+    --c: var(--cat-telekom);
+  }
+  .related li[data-cat='transport'] {
+    --c: var(--cat-transport);
+  }
+  .related li[data-cat='igre'] {
+    --c: var(--cat-igre);
+  }
+  .related a {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.7rem;
+    height: 100%;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--line);
+    border-radius: 0.9rem;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .related a:hover {
+    border-color: var(--ink);
+  }
+  .related .swatch {
+    width: 0.8rem;
+    height: 0.8rem;
+    margin-top: 0.4em;
+  }
+  .rel-tag {
+    grid-column: 2;
+    margin-top: 0.3rem;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+  .all {
+    display: inline-block;
+    margin-top: 1.5rem;
+    font-size: var(--step--1);
+  }
+
+  .foot {
+    padding-block: 2rem 3rem;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+  .foot p {
+    margin: 0;
+  }
+
+  @media (max-width: 52rem) {
+    .cols {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 38rem) {
+    .intro {
+      grid-template-columns: 1fr;
+    }
+    .tagline,
+    .badges,
+    .intro .btn {
+      grid-column: 1;
+    }
+    .swatch {
+      display: none;
+    }
+  }
+</style>
