@@ -15,6 +15,38 @@
     "name": "Premium Apartment Tuzla",
     "tagline": "A modern two-bedroom flat in central Tuzla",
     "description": "A direct-booking site for an apartment near the Pannonian Lakes, from €49 a night. Guests can book via WhatsApp, an enquiry form, Airbnb or Booking.com, and browse the rooms, amenities, photos and map.",
-    "audience": "Guests visiting Tuzla"
+    "audience": "Guests visiting Tuzla",
+    "slug": "apartment-tuzla",
+    "page": {
+      "title": "Premium Apartment Tuzla — book direct from €49",
+      "description": "Apartment in central Tuzla near the Pannonian Lakes, from €49 per night. Book direct over WhatsApp or the enquiry form, with no agency commission.",
+      "h1": "Premium Apartment Tuzla — book direct, from €49",
+      "body": [
+        "An apartment in central Tuzla, close to the Pannonian Lakes, from €49 a night. Book direct over WhatsApp or the enquiry form with no agency commission — or go through Airbnb and Booking.com if you prefer a platform.",
+        "The page shows the rooms, amenities, photo gallery and the location on a map, so guests see what they are getting before they ask."
+      ],
+      "features": [
+        "Direct booking over WhatsApp or an enquiry form",
+        "Airbnb and Booking.com as alternatives",
+        "Gallery, amenities and the location on a map",
+        "Walking distance to the centre, close to the Pannonian Lakes"
+      ]
+    }
+  },
+  "slug": "apartman-tuzla",
+  "page": {
+    "title": "Premium apartman Tuzla — rezervacija od 49 € po noći",
+    "description": "Apartman u centru Tuzle, blizu Panonskih jezera, od 49 € po noći. Rezerviši direktno preko WhatsAppa ili obrasca, bez provizije posrednika.",
+    "h1": "Premium apartman Tuzla — rezerviši direktno, od 49 €",
+    "body": [
+      "Apartman u centru Tuzle, blizu Panonskih jezera, od 49 € po noći. Rezervacija ide direktno preko WhatsAppa ili upitnog obrasca, bez provizije posrednika — a ko više vjeruje platformama, tu su i Airbnb i Booking.com.",
+      "Na strani su sobe, sadržaji, galerija i lokacija na karti, da gost vidi šta dobija prije nego pita."
+    ],
+    "features": [
+      "Direktna rezervacija preko WhatsAppa ili obrasca",
+      "Airbnb i Booking.com kao alternativa",
+      "Galerija, sadržaji i lokacija na karti",
+      "Pješke do centra, blizu Panonskih jezera"
+    ]
   }
 }

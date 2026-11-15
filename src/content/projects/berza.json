@@ -14,6 +14,36 @@
   "en": {
     "tagline": "Post a load and let carriers send you offers",
     "description": "An online freight marketplace for Bosnia and Herzegovina. Post what needs moving, from parcels to furniture and vehicles, and drivers bid for the job. Compare prices, ratings and profiles, then pick the best offer.",
-    "audience": "People shipping goods, and carriers"
+    "audience": "People shipping goods, and carriers",
+    "slug": "freight-exchange",
+    "page": {
+      "title": "Berza.ba — freight exchange for Bosnia",
+      "description": "Post what needs moving, from parcels to furniture and vehicles, and carriers bid for the job. Compare prices, ratings and profiles, then pick one.",
+      "h1": "Berza.ba — post your load, carriers bid for it",
+      "body": [
+        "Post what needs moving, from parcels to furniture and vehicles, and drivers bid for the job. Instead of calling five hauliers and haggling on the phone, the offers come to you.",
+        "Compare prices, ratings and profiles, then pick whoever suits you. An online freight exchange for Bosnia and Herzegovina."
+      ],
+      "features": [
+        "Post what is being moved, from where and to where",
+        "Carriers bid against each other",
+        "Carrier ratings and profiles in one place"
+      ]
+    }
+  },
+  "slug": "berza-transporta",
+  "page": {
+    "title": "Berza.ba — berza transporta robe u BiH",
+    "description": "Objaviš šta treba prevesti, od paketa do namještaja i vozila, a prevoznici se nadmeću ponudama. Uporediš cijene, ocjene i profile i izabereš najbolju.",
+    "h1": "Berza.ba — objavi šta prevoziš, prevoznici se nadmeću",
+    "body": [
+      "Objaviš šta treba prevesti, od paketa do namještaja i vozila, i vozari se nadmeću ponudama. Umjesto zvanja petorice i pogodbe po telefonu, ponude ti stižu same.",
+      "Uporediš cijene, ocjene i profile i izabereš onoga ko ti odgovara. Online berza transporta robe za BiH."
+    ],
+    "features": [
+      "Objava šta se prevozi, odakle i dokle",
+      "Prevoznici se nadmeću ponudama",
+      "Ocjene i profili prevoznika na jednom mjestu"
+    ]
   }
 }

@@ -15,6 +15,34 @@
   "en": {
     "tagline": "Get notified the moment your iPhone is in stock",
     "description": "Watches pickup availability for chosen models at selected Apple Stores and alerts you when they show up.",
-    "audience": "Buyers waiting for a new iPhone"
+    "audience": "Buyers waiting for a new iPhone",
+    "slug": "iphone-stock",
+    "page": {
+      "title": "iPhone Stock — Apple Store pickup availability",
+      "description": "Tracks pickup availability for the models you choose at selected Apple Stores and alerts you the moment they come back in stock.",
+      "h1": "iPhone Stock — tell me when it is back in stock",
+      "body": [
+        "A new iPhone available for pickup at an Apple Store appears and disappears within minutes. iPhone Stock watches the model you want at the stores you choose and alerts you when it comes into stock.",
+        "Useful when you are buying abroad and cannot sit refreshing Apple’s page all day."
+      ],
+      "features": [
+        "Watches specific models at selected stores",
+        "Alerts you when a model becomes available for pickup"
+      ]
+    }
+  },
+  "slug": "iphone-stock",
+  "page": {
+    "title": "iPhone Stock — dostupnost iPhonea u Apple Storeu",
+    "description": "Prati dostupnost modela za preuzimanje u odabranim Apple Store radnjama i javi ti se kad se pojave na stanju.",
+    "h1": "iPhone Stock — javi mi kad se pojavi na stanju",
+    "body": [
+      "Novi iPhone za preuzimanje u Apple Storeu se pojavi i nestane u par minuta. iPhone Stock prati dostupnost modela koji te zanima u radnjama koje izabereš i javi se kad uđe na stanje.",
+      "Korisno kad kupuješ u inostranstvu i ne možeš svaki čas osvježavati Appleovu stranicu."
+    ],
+    "features": [
+      "Praćenje određenih modela u odabranim radnjama",
+      "Obavještenje kad se model pojavi za preuzimanje"
+    ]
   }
 }

@@ -99,7 +99,9 @@ const jsonLd = {
           operatingSystem: 'Web',
           inLanguage: langMeta[lang].locale,
           author: { '@id': personId },
-          ...(p.url ? { url: p.url } : {}),
+          // Strana projekta je kanonska adresa kad postoji; živa aplikacija ide u sameAs.
+          ...(p.href ? { url: new URL(p.href, Astro.site).href } : p.url ? { url: p.url } : {}),
+          ...(p.href && p.url ? { sameAs: p.url } : {}),
           ...(p.video
             ? {
                 video: {

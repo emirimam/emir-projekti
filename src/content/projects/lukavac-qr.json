@@ -20,6 +20,40 @@
     "name": "Lukavac Info — digital info trail",
     "tagline": "Scan the QR code on a board: map, story, audio guide and stamps for rewards",
     "description": "The Lukavac digital info trail, with nothing to install. A QR code on an info board opens a map right where the visitor stands, with routes to the other places, text, photos and an audio story in Bosnian, English and German. Scanning the boards fills a digital passport with stamps and partner rewards. The tourist board manages content, QR codes and visit statistics in an admin panel. A project of the StartITi youth association, at the invitation of the Lukavac Tourist Board.",
-    "audience": "Visitors and residents of Lukavac, Lukavac Tourist Board"
+    "audience": "Visitors and residents of Lukavac, Lukavac Tourist Board",
+    "slug": "lukavac-info",
+    "page": {
+      "title": "Lukavac Info — digital trail and QR guide",
+      "description": "A QR code on an info board opens a map of Lukavac with routes, text, photos and audio in Bosnian, English and German. No app to install.",
+      "h1": "Lukavac Info — scan a QR code and the town opens up",
+      "body": [
+        "A QR code on an info board opens a map right where the visitor is standing, with routes to the other places — the riverside promenade, Trg slobode, Vila Solvay, Macan Marija, the memorial to the victims of the Srebrenica genocide and Lake Modrac. Nothing to install.",
+        "Every location carries text, photos and an audio story in Bosnian, English and German. Scanning the boards fills a digital passport with stamps and partner rewards, while the tourist board manages content, QR codes and visit statistics through an admin panel."
+      ],
+      "features": [
+        "The map opens at the spot where the visitor is standing",
+        "Text, photos and an audio story in three languages",
+        "A digital passport with stamps and partner rewards",
+        "An admin panel with visit statistics for the tourist board"
+      ],
+      "note": "A project of the StartITi youth association, at the invitation of the Lukavac Tourist Board."
+    }
+  },
+  "slug": "lukavac-info",
+  "page": {
+    "title": "Lukavac Info — digitalna info staza i QR vodič",
+    "description": "QR kod na info tabli otvara mapu Lukavca s putanjama, tekstom, fotografijama i audio pričom na bosanskom, engleskom i njemačkom. Bez instalacije.",
+    "h1": "Lukavac Info — skeniraš QR kod i grad ti se otvori",
+    "body": [
+      "QR kod na info tabli otvara mapu na mjestu gdje posjetilac stoji, s putanjama do ostalih lokacija — šetališta, Trga slobode, Vile Solvay, Macan Marije, Spomen-obilježja žrtvama genocida u Srebrenici i Jezera Modrac. Bez instaliranja aplikacije.",
+      "Svaka lokacija nosi tekst, fotografije i audio priču na bosanskom, engleskom i njemačkom. Skeniranjem tabli posjetilac skuplja digitalni pasoš s pečatima i nagradama partnera, a Turistička zajednica sadržaj, QR kodove i statistiku posjeta vodi kroz admin panel."
+    ],
+    "features": [
+      "Mapa se otvara na lokaciji gdje posjetilac stoji",
+      "Tekst, fotografije i audio priča na tri jezika",
+      "Digitalni pasoš s pečatima i nagradama partnera",
+      "Admin panel sa statistikom posjeta za Turističku zajednicu"
+    ],
+    "note": "Projekat Udruženja mladih StartITi, na poziv Turističke zajednice Lukavac."
   }
 }
